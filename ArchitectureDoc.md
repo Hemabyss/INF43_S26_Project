@@ -1,7 +1,16 @@
 
 
-| Squad Seeker  HW2: Architecture Document *INF 43*Anna Lee \- chaeeul3 Manas Kottakota \- kottakom Nikash Malhotra \- nikashm Tanmay Garg \- tanmayg1 Jared Yrastorza \- jryrasto  |
-| ----- |
+# Squad Seeker — Architecture 
+
+## Team Members:
+
+- Anna Lee - chaeeul3
+- Manas Kottakota - kottakom
+- Nikash Malhotra - nikashm
+- Tanmay Garg - tanmayg1
+- Jared Yrastorza - jryrasto
+
+---
 
 # **1\. Architectural Summary**
 
