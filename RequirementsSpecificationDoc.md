@@ -124,6 +124,60 @@ Squad Seeker is designed for use in dense, high-activity urban and suburban envi
 - Event chat inherits all safety rules from proximity chat: message filtering for slurs, threats, and unsolicited intimate imagery is on by default; rate limiting applies; edited messages are watermarked; the 7-day text-only restriction applies to users who are not yet mutual friends
 - Block relationships are enforced in event chat: if User A has blocked User B, B's messages are not visible to A and A's messages are not visible to B within the same event chat, consistent with the First-In policy described in the blocking requirements
 - When an event expires or is manually removed, the event chat converts to a persistent group chat for all attendees at that time; no new users may join after expiry, but existing members retain access and may continue messaging indefinitely
+
+### Onboarding
+#### Onboarding Sequence
+The onboarding flow proceeds in the following order:
+1. Welcome screen with Sign in with Apple, Sign in with Google, or email/password account creation
+2. Optional skippable explainer (see below)
+3. Username selection
+4. Interest selection
+5. Permissions screen (location + notifications)
+6. Main map screen
+
+#### Account Creation
+
+- Users may create an account via Sign in with Apple, Sign in with Google, or email and password
+- Email/password accounts require email verification before proceeding; unverified accounts cannot advance past the welcome screen
+- Sign in with Apple and Sign in with Google complete verification through the respective OAuth flow; no additional verification step is required
+- Usernames must be unique, between 3 and 30 characters, and may contain letters, numbers, underscores, and hyphens only
+- Profile photo, experience level, pronouns, and other bio fields are optional at this stage and may be completed later from the profile settings screen
+
+#### Optional Explainer
+
+- After account creation, users are shown a brief 3–4 screen visual explainer covering: what proximity matching is, what strangers can and cannot see about them, and how blackout zones work
+- The explainer is skippable via a clearly visible "Skip" control on every screen; users who skip land directly on the username selection step
+- The explainer is shown only once per account, on first install; returning users and reinstalled accounts do not see it again
+
+#### Interest Selection
+
+- Users are presented with a curated list of approximately 20–30 popular interests and must select at least one before proceeding
+- A search bar is available above the curated list to find interests not surfaced in the default set
+- Selected interests are highlighted; the user may select multiple
+- A "Continue" button becomes active once at least one interest is selected
+- Interests selected during onboarding are saved to the user's profile and may be added to, removed, or adjusted at any time from the profile settings screen after onboarding
+
+#### Permissions Screen
+
+- After interest selection, users are shown a single dedicated permissions screen that requests both location access and notification access together
+- The screen displays a plain-language explanation of why each permission is needed before the iOS system dialogs fire: location is required for proximity matching and blackout zone enforcement; notifications are used for proximity alerts, friend requests, and chat messages
+- Location permission is requested at the "Always Allow" level with an explanation of why background access is needed (so the app can notify the user when a match enters range even when the app is not foregrounded); users who grant only "While Using" are informed that proximity alerts will only fire while the app is open
+- Notification permission is requested immediately after location; users who deny notifications are informed that proximity alerts and friend request updates will only be visible when they open the app manually
+- Both permissions may be denied without blocking progress; the consequences of denial are shown inline before the system dialogs fire so users can make an informed choice
+
+#### Denied Location Permission (Degraded Map State)
+
+- Users who deny location permission during onboarding are allowed to proceed to the map screen
+- The map is shown in a degraded state: the map tiles render, but no nearby users, interest pins, or event pins are displayed
+- A persistent non-dismissible banner is shown at the top of the map screen reading "Location access is off — enable it in Settings to find people nearby" with a button that deep-links to the app's entry in iOS Settings
+- The banner remains visible on every map session until location permission is granted; it does not appear on non-map screens
+- All other app features unrelated to live location (profile editing, interest management, chat with existing mutual friends) remain fully accessible in the degraded state
+
+#### Returning Users and Resume Behavior
+
+- A fully set-up returning user (account created, username set, at least one interest selected) who signs out or reinstalls lands directly on the main map screen after re-authenticating via their original sign-in method; no onboarding screens are shown
+- A partially set-up user (account created but interest selection not completed) who quits mid-onboarding resumes at the interest selection step on next app open; account credentials and username are preserved, but interest selection restarts from the beginning
+- A user who has not yet created an account sees the welcome screen on app open
 ---
 
 ## Functional Requirements Analyses
@@ -268,6 +322,22 @@ Squad Seeker is designed for use in dense, high-activity urban and suburban envi
 **Ethical Concerns:**
 - Public events tied to sensitive interest tags (e.g., mental health support groups, religious gatherings) are discoverable by any user subscribed to that interest within range, which could expose attendance at sensitive activities to unintended observers; users should be reminded of this when creating a public event under a sensitive tag
 - The optional RSVP model means attendance counts may significantly underrepresent actual turnout, which could mislead users assessing whether an event is worth attending; this is an acceptable trade-off given the privacy benefit
+
+### 9. Onboarding
+**Pros:**
+- Front-loading the privacy explainer before the permissions request gives users the context they need to make an informed decision, which research consistently shows improves permission grant rates compared to asking cold
+- Making profile photo optional at signup removes a common drop-off point for users who don't have a suitable photo on hand; they can add one later without losing their account
+- The curated interest list with search gives new users a fast path to selecting something familiar while leaving room for niche interests the curated list doesn't cover
+- The degraded map state keeps denied-permission users in the app and gives them a clear, low-friction path to fixing the issue rather than hitting a hard wall
+
+**Cons:**
+- Supporting three account creation methods (Apple, Google, email) increases authentication surface area and requires handling edge cases such as a user who signs up with email and later tries to sign in with Google using the same address
+- The "Always Allow" location permission request during onboarding may feel aggressive to privacy-conscious users who haven't yet experienced the app's value; some users may grant "While Using" and only upgrade to "Always Allow" after seeing the app in action
+- Restarting interest selection on resume (rather than preserving partial selections) adds minor friction for users who made thoughtful selections before quitting; this trade-off accepts some UX cost in exchange for simpler state management
+
+**Ethical Concerns:**
+- Requesting location at the "Always Allow" level during onboarding, before the user has experienced the app, requires especially clear justification in the permissions screen copy; the explanation must be honest about when background location is used and must not obscure that the user can choose "While Using" as a less permissive alternative
+- The optional explainer covering what strangers can see should be genuinely informative, not a superficial trust-building exercise; if it understates the visibility of user location to interest-matched strangers, it undermines informed consent
 ---
 
 ## Use Cases
