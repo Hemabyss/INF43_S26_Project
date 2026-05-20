@@ -1,1 +1,13 @@
-test
+MEETING NOTES
+
+
+5/20 - Week 8
+Date & Type: May 20, 2026 — In Person (Discussion)
+Attendees: Manas, Nikash, Jared, Anna, Tanmay
+
+Summary:
+- Brainstormed the overall app concept and discussed the main user flows and interface structure
+- Created and reviewed early UI sketches and mockups for major screens using prototyping tools
+- Discussed improvements related to usability, navigation, consistency, and minimalist design principles
+- Reviewed Nielsen heuristics and identified how the interface addresses areas such as error prevention, user control, and recognition over recall
+- Finalized mockups, organized documentation/screenshots, and confirmed all assignment requirements before submission.
