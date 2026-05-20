@@ -178,6 +178,72 @@ The onboarding flow proceeds in the following order:
 - A fully set-up returning user (account created, username set, at least one interest selected) who signs out or reinstalls lands directly on the main map screen after re-authenticating via their original sign-in method; no onboarding screens are shown
 - A partially set-up user (account created but interest selection not completed) who quits mid-onboarding resumes at the interest selection step on next app open; account credentials and username are preserved, but interest selection restarts from the beginning
 - A user who has not yet created an account sees the welcome screen on app open
+
+### Map View
+The map screen is the primary surface of Squad Seeker. It renders continuously while the app is foregrounded and reflects the user's live position, nearby matches, active interests, event pins, and blackout zones. This section defines the visual and behavioral states of the map under all conditions a user may encounter.
+
+#### User Position
+- The user's own position is always represented as a distinct avatar pin at the center of the map, using their profile photo if set or a default avatar placeholder if not
+- The user's pin does not move relative to the map viewport, as the map scrolls around it as the user pans; re-centering on the user's position is available via a standard "recenter" control
+- The user's own pin is never visible to other users; it is a local UI element only, representing the user's position to themselves
+
+#### Stranger Representation (Count Bubbles)
+
+- Nearby users who are not mutual friends are not shown as individual pins; instead, they are aggregated into interest-labeled count bubbles
+- Each active interest with at least one nearby subscriber within range displays a count bubble on the map at the approximate centroid of those users' positions, labeled with the interest name and count (e.g., "3 hikers nearby")
+- Count bubbles respect the fuzzy location model: the centroid is derived from k-anonymized position data, not precise coordinates, so the bubble's position on the map reflects a general area rather than an exact location
+- If the interest filter is active and a particular interest is toggled off, its count bubble is hidden regardless of whether matches exist
+- Tapping a count bubble opens a bottom sheet listing the anonymized profiles (username, bio, shared interest badge) of the users contributing to that bubble; from this sheet the user may view a profile or initiate a chat or friend request if proximity requirements are met
+
+#### Mutual Friend Representation (Individual Pins)
+
+- Mutual friends who have enabled precise location sharing appear as individual avatar pins at their exact current position
+- Mutual friends who have not enabled precise location sharing, or whose session has expired, do not appear on the map
+- A mutual friend's pin displays their profile photo and a small color-coded badge indicating which shared interest is active; if multiple interests are shared, badges are stacked vertically on the pin up to a maximum of three, with a "+N" overflow indicator if more
+- Tapping a mutual friend's pin opens their profile card with quick access to chat
+
+#### Multiple Shared Interests (Color Coding)
+
+- Each interest the user is subscribed to is assigned a consistent color throughout the map session; this color is used for both count bubbles and the interest badges on mutual friend pins
+Colors are assigned from a fixed accessible palette at session start and remain stable across the session; users cannot manually assign colors to interests in V1
+- When a user shares multiple interests with a nearby person, their pin displays stacked color-coded interest badges representing each shared interest, up to three visible with a "+N" overflow indicator
+
+#### Event Pins
+
+- Public events tagged to an interest the user is subscribed to appear as distinct event pins on the map, visually differentiated from user pins by shape (e.g., a location marker rather than a circle avatar)
+- Event pins display the event title and scheduled time on tap; tapping opens the event detail view
+- Private event pins are visible only to invited users; they appear identically to public event pins for those users
+- Event pins within the user's blackout zone are hidden from the user's own map view
+
+#### Blackout Zone Overlay
+
+- The user's active blackout zones are rendered as shaded circular overlays on the map, visible only to the user themselves and never transmitted to or rendered for any other user
+- The shading is semi-transparent to allow map detail to remain visible beneath it
+- A user inside their own blackout zone sees their own avatar pin normally but understands from the overlay that they are not visible to others in that area
+- Blackout zone overlays can be tapped to view the zone's radius and access options to edit or remove it
+- The overlay is rendered client-side only; the server stores only the GPS coordinate and radius of each zone, not a rendered boundary
+
+#### Map Controls
+
+- **Interest filter:** a horizontally scrollable row of interest tags above or below the map allows the user to toggle individual interest layers on or off; toggling an interest off hides its count bubble and removes its badge from mutual friend pins
+- **Friends-only toggle:** a single toggle that, when active, hides all count bubbles and shows only mutual friend pins; useful for users who want to use the map purely to locate known contacts
+Recenter control: taps to re-center the map viewport on the user's current position
+- **Long-press context menu:** a long-press anywhere on the map opens a context menu with the option "Create Event here," pre-populating the event creation form with the tapped coordinates; additional context menu options may be added in future versions
+
+#### Empty State
+
+- When no nearby matches exist (no interest subscribers in range, all interests muted, or friends-only toggle active with no friends nearby), the map renders normally with the user's own position centered and no additional indicators
+- No empty state message or illustration is shown; the absence of pins and bubbles is self-explanatory
+- This applies equally to new users in low-density areas and existing users whose matches have all left range
+
+#### Degraded State (Location Permission Denied)
+
+- As defined in the Onboarding section: map tiles render, user pin is not shown (no position available), all count bubbles and friend pins are hidden, and a persistent non-dismissible banner prompts the user to enable location in Settings
+
+#### Blackout Zone Active State
+
+- When the user's current position falls within one of their own blackout zones, their avatar pin remains visible to themselves on the map with a distinct visual indicator (e.g., a muted color or lock icon overlay on the pin) communicating that they are currently hidden from other users
+- No other change to the map view occurs; the user can still see nearby matches and events normally
 ---
 
 ## Functional Requirements Analyses
@@ -338,6 +404,25 @@ The onboarding flow proceeds in the following order:
 **Ethical Concerns:**
 - Requesting location at the "Always Allow" level during onboarding, before the user has experienced the app, requires especially clear justification in the permissions screen copy; the explanation must be honest about when background location is used and must not obscure that the user can choose "While Using" as a less permissive alternative
 - The optional explainer covering what strangers can see should be genuinely informative, not a superficial trust-building exercise; if it understates the visibility of user location to interest-matched strangers, it undermines informed consent
+
+### 10. Map View
+**Pros:**
+
+- Count bubbles for strangers solve two problems simultaneously: they protect individual stranger privacy by not revealing precise positions, and they prevent map clutter in high-density areas where showing individual pins for every nearby user would make the map unreadable
+- Client-side-only blackout zone rendering ensures that zone boundaries are never transmitted to the server in rendered form, reducing the sensitivity of stored data
+- The long-press event creation gesture ties the event's location to a deliberate, spatially-aware action rather than a separate flow, which is more natural for a map-first interaction model
+- The friends-only toggle gives users a low-friction way to use the app purely as a friend-locator without leaving their interest subscriptions active
+
+**Cons:**
+
+- Count bubble centroid positioning using k-anonymized data may place the bubble in a visually misleading location (e.g., in the middle of a river or building) if the contributing users are distributed unevenly; a minimum accuracy threshold or snap-to-road behavior should be considered
+- Color assignment from a fixed palette may produce low-contrast combinations for users with color vision deficiencies; the palette must be designed with accessibility in mind (WCAG contrast requirements) and interest labels must always accompany color coding rather than relying on color alone
+- The long-press event creation gesture is not discoverable without instruction; users who do not read the explainer or encounter a tooltip may not find it; consider a one-time tooltip on the map screen pointing to the long-press behavior
+
+**Ethical Concerns:**
+
+- Count bubbles aggregate stranger positions but still communicate meaningful real-world information ("3 hikers are in this park right now"); in low-density scenarios a count bubble of "1" combined with a niche interest effectively pinpoints a single individual to a general area, which is a partial de-anonymization; a minimum count threshold (e.g., suppress bubbles with fewer than 2 contributors) should be considered to mitigate this
+
 ---
 
 ## Use Cases
