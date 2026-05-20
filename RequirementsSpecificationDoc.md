@@ -91,6 +91,39 @@ Squad Seeker is designed for use in dense, high-activity urban and suburban envi
 - First messages can only be sent between users subscribed to the same interest
 - Geofenced chats: if either non-friend user exits the range of the mutual interest, chat is suspended unless both parties opt to keep it active
 
+### Events & Activity Markers
+- Events are lightweight map pins that allow any user to signal that an activity will take place at a specific location and time. They are not structured meetups — there is no formal RSVP system, capacity limit, or host management interface. An event is simply a discoverable beacon tied to an interest, a place, and a time.
+
+#### Event Creation
+- Any user may create an event, provided they are subscribed to the interest the event is tagged under
+- To prevent spam, event creation is rate-limited on a sliding scale: users may create a maximum of 3 events per 7-day rolling window; attempts beyond this limit are rejected with an informative error
+- Each event requires: a title, a scheduled date and time, a location (set by dropping a pin on the map), and a primary interest tag drawn from the creator's active subscriptions
+- Events may be designated as public (visible to all users subscribed to the tagged interest within that interest's range cap) or private (visible only to users explicitly invited by the creator)
+- The creator may cancel and remove their event at any time before or after the scheduled start
+
+#### Event Visibility on the Map
+- Public events appear as interest-tagged pins on the map for all users subscribed to the same interest and within the interest's range cap
+- Private events appear only to invited users, regardless of interest subscription or proximity
+- A user's blackout zones apply to events: if an event is located within a user's blackout zone, that user's attendance and location are not visible to other attendees or the host, and the event pin itself is hidden from that user's map view
+- Event pins display the event title, scheduled time, interest tag, and an optional attendee count (see RSVP below); tapping a pin opens the event detail view
+
+#### Event Expiry
+- Events auto-expire 2 hours after their scheduled start time and are automatically removed from the map
+- The creator may manually remove an event at any time, which immediately removes the pin from all viewers' maps
+- Both auto-expiry and manual removal terminate new-user access to the event detail view; existing attendees retain access to the event chat (see below)
+
+#### Attendance Signal (Optional RSVP)
+- Users may optionally tap "I'm going" on any event they can see; this is not required to attend in person
+- RSVP status is visible to all other users who can view the event, including the attendee count shown on the map pin
+- RSVP is entirely optional; users who prefer not to signal attendance may attend without marking interest, consistent with the app's broader privacy defaults
+- Users may withdraw their RSVP at any time before event expiry
+
+#### Event Chat
+- An event chat is automatically created for each event and is accessible to users who have either marked attendance (RSVP'd) or been explicitly invited (for private events)
+- The host (creator) is always a member of the event chat
+- Event chat inherits all safety rules from proximity chat: message filtering for slurs, threats, and unsolicited intimate imagery is on by default; rate limiting applies; edited messages are watermarked; the 7-day text-only restriction applies to users who are not yet mutual friends
+- Block relationships are enforced in event chat: if User A has blocked User B, B's messages are not visible to A and A's messages are not visible to B within the same event chat, consistent with the First-In policy described in the blocking requirements
+- When an event expires or is manually removed, the event chat converts to a persistent group chat for all attendees at that time; no new users may join after expiry, but existing members retain access and may continue messaging indefinitely
 ---
 
 ## Functional Requirements Analyses
@@ -220,6 +253,21 @@ Squad Seeker is designed for use in dense, high-activity urban and suburban envi
 - The silent exclusion, while protective, operates without transparency to any party other than the system, which raises questions about fairness in shared social spaces
 - Group chat dynamics in real-world friend networks are complex; a binary block-based exclusion policy may not map cleanly onto nuanced social relationships
 
+### 8. Events and Activities Markers
+**Pros:**
+- The lightweight pin model keeps Events consistent with the app's ambient-discovery design language — an event is a structured version of "I will be here," not a separate product surface
+- The sliding-scale rate limit prevents spam without imposing a rigid per-event cooldown that would frustrate legitimate organizers running frequent activities (e.g., a daily running group)
+- Optional RSVP respects the privacy defaults established elsewhere in the spec while still giving organizers a useful signal about expected turnout
+- Blackout zone enforcement on events ensures that the event system cannot be used to circumvent a user's location privacy preferences
+
+**Cons:**
+- The absence of capacity limits means a popular public event could attract more attendees than the host intended, with no mechanism to close the event to new viewers once a threshold is reached
+- The sliding-scale rate limit requires server-side tracking of per-user event creation history, adding modest complexity to the Location Service or API Server
+- Persisting the event chat indefinitely after expiry means the system accumulates group chats that may never be used again; a future cleanup policy (e.g., archive after 90 days of inactivity) should be considered
+
+**Ethical Concerns:**
+- Public events tied to sensitive interest tags (e.g., mental health support groups, religious gatherings) are discoverable by any user subscribed to that interest within range, which could expose attendance at sensitive activities to unintended observers; users should be reminded of this when creating a public event under a sensitive tag
+- The optional RSVP model means attendance counts may significantly underrepresent actual turnout, which could mislead users assessing whether an event is worth attending; this is an acceptable trade-off given the privacy benefit
 ---
 
 ## Use Cases
