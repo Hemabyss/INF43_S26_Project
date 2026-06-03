@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# c8 raw coverage temp (the generated HTML report under Testing/coverage/ IS committed)
+.nyc_output/
+**/coverage/tmp/

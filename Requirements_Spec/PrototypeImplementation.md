@@ -1,5 +1,9 @@
 # 6. Prototype Implementation
 
+> **Code:** the stub prototype described below is committed under
+> [`prototype/`](./prototype/) — `api_server.py`, `location_service.py`,
+> `SquadSeekerClientStub.swift`, and a `README.md` with run instructions.
+
 ## 6.1 What Was Built
 
 The team built a minimal prototype to gain early experience with the core communication paths in the system. On the backend, a skeleton FastAPI application was stood up with stub endpoints for interest subscription (`POST /interests/subscribe`), location updates (`POST /location/update`), and a WebSocket chat endpoint (`/ws/chat/{sessionId}`). No database reads or writes are performed at this stage — all responses are hardcoded or echo the input back. The two backend services were run as separate processes on separate ports to confirm that the planned separation between the API Server and Location Service is workable in practice.

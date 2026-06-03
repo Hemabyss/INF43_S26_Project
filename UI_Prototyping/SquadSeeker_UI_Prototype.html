@@ -1,0 +1,2545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SquadSeeker — Wireframe Preview</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=DM+Serif+Display&display=swap');
+
+  :root {
+    /* Brand */
+    --accent: #D946EF;
+    --accent-dark: #A21CAF;
+    --accent-light: #F0ABFC;
+    /* Neutrals */
+    --bg: #F8F6F3;
+    --surface: #FFFFFF;
+    --surface2: #F2F2F7;
+    --border: #E5E5EA;
+    --text-primary: #1C1C1E;
+    --text-secondary: #636366;
+    --text-tertiary: #AEAEB2;
+    /* Interest colors */
+    --c-outdoors: #16A34A;
+    --c-sports: #2563EB;
+    --c-music: #4F46E5;
+    --c-food: #EA580C;
+    --c-arts: #9333EA;
+    --c-games: #CA8A04;
+    --c-tech: #0D9488;
+    --c-social: #DB2777;
+    /* Semantic */
+    --success: #16A34A;
+    --error: #DC2626;
+    --warning: #D97706;
+    /* Phone chrome */
+    --phone-bg: #1C1C1E;
+    --phone-w: 375px;
+    --phone-h: 812px;
+    --screen-h: 734px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  /* ── LAYOUT ─────────────────────────────────────────── */
+  .app-shell {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: 56px 1fr;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--text-primary); }
+  .header-sub {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-family: 'Space Mono', monospace;
+  }
+  .header-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .btn-sm {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all .15s;
+  }
+  .btn-sm.primary { background: var(--accent); color: #fff; }
+  .btn-sm.primary:hover { background: var(--accent-dark); }
+  .btn-sm.ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+  .btn-sm.ghost:hover { background: var(--surface2); }
+
+  /* Sidebar */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 16px 0;
+  }
+  .sidebar-section {
+    padding: 4px 16px 12px;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 6px;
+    padding: 0 4px;
+  }
+  .screen-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: left;
+    transition: all .12s;
+  }
+  .screen-btn:hover { background: var(--surface2); color: var(--text-primary); }
+  .screen-btn.active { background: #F5D0FE; color: var(--accent-dark); font-weight: 600; }
+  .screen-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--text-tertiary);
+  }
+  .screen-btn.active .screen-num { background: var(--accent); color: #fff; }
+
+  /* Main content */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    overflow: hidden;
+  }
+
+  .canvas-area {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 40px 80px;
+    overflow-y: auto;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  /* Phone frame */
+  .phone-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .phone-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+  .phone-frame {
+    width: var(--phone-w);
+    height: var(--phone-h);
+    background: var(--phone-bg);
+    border-radius: 54px;
+    padding: 12px;
+    box-shadow:
+      0 0 0 1px #3A3A3C,
+      0 40px 80px rgba(0,0,0,.35),
+      0 0 0 8px #2C2C2E;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: var(--surface);
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Notch */
+  .phone-screen::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 120px; height: 28px;
+    background: var(--phone-bg);
+    border-radius: 0 0 20px 20px;
+    z-index: 50;
+  }
+  /* Status bar placeholder */
+  .status-bar {
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 24px 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    justify-content: space-between;
+  }
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+  .status-icon { width: 16px; height: 10px; background: var(--text-primary); border-radius: 2px; opacity: .7; }
+
+  /* Screen content area */
+  .screen-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    scrollbar-width: none;
+  }
+  .screen-content::-webkit-scrollbar { display: none; }
+
+  /* Bottom tab bar */
+  .tab-bar {
+    height: 82px;
+    flex-shrink: 0;
+    background: rgba(255,255,255,.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px 16px;
+  }
+  .tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex: 1;
+    padding: 8px 0;
+  }
+  .tab-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tab-icon svg { width: 22px; height: 22px; }
+  .tab-label { font-size: 10px; color: var(--text-tertiary); font-weight: 500; }
+  .tab-item.active .tab-label { color: var(--accent); }
+  .tab-item.active .tab-icon { background: #F5D0FE; }
+  .tab-item.active svg { stroke: var(--accent); }
+
+  /* ── COMMON UI COMPONENTS ──────────────────────────── */
+  .nav-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .nav-title {
+    font-size: 17px;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+  }
+  .nav-back {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--accent);
+    font-size: 17px;
+    cursor: pointer;
+  }
+  .nav-back svg { width: 10px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2.5; stroke-linecap: round; }
+  .nav-action { color: var(--accent); font-size: 17px; font-weight: 500; margin-left: auto; cursor: pointer; }
+
+  .btn-primary {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    height: 50px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary.disabled { opacity: .4; }
+  .btn-secondary {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    height: 50px;
+    background: transparent;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .chip.filled { background: var(--accent); color: #fff; }
+  .chip.outlined { border: 1.5px solid var(--border); color: var(--text-secondary); background: transparent; }
+  .chip.interest { color: #fff; }
+
+  .section-header {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    padding: 12px 16px 6px;
+  }
+
+  .list-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .list-row-main { flex: 1; }
+  .list-row-title { font-size: 15px; font-weight: 500; }
+  .list-row-sub { font-size: 13px; color: var(--text-secondary); }
+  .list-chevron { color: var(--text-tertiary); font-size: 14px; }
+
+  .avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-light), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .avatar.lg { width: 72px; height: 72px; font-size: 28px; }
+
+  .map-bg {
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, #E5E5EA 39px, #E5E5EA 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, #E5E5EA 39px, #E5E5EA 40px),
+      #F0F0F5;
+    position: relative;
+  }
+  .map-road-h {
+    position: absolute;
+    height: 8px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  }
+  .map-road-v {
+    position: absolute;
+    width: 8px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  }
+  .map-block {
+    position: absolute;
+    background: #E8E8EE;
+    border-radius: 4px;
+  }
+
+  .progress-bar-steps {
+    display: flex;
+    gap: 6px;
+    padding: 12px 16px 0;
+  }
+  .step-seg {
+    height: 4px;
+    border-radius: 2px;
+    flex: 1;
+    background: var(--border);
+  }
+  .step-seg.done { background: var(--accent); }
+  .step-seg.active { background: var(--accent); opacity: .5; }
+
+  /* Annotation panel */
+  .annotations {
+    width: 300px;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 24px 20px;
+    flex-shrink: 0;
+  }
+  .annotation-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .annotation-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    margin-bottom: 16px;
+  }
+  .annotation-section {
+    margin-bottom: 20px;
+  }
+  .annotation-section h4 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+  .annotation-section p, .annotation-section li {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+  .annotation-section ul { padding-left: 16px; }
+  .annotation-section li { margin-bottom: 4px; }
+  .heuristic-tag {
+    display: inline-block;
+    background: #F5D0FE;
+    color: var(--accent-dark);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin: 2px 2px 2px 0;
+  }
+
+  /* ── PALETTE PANEL ─────────────────────────────────── */
+  .palette-panel {
+    padding: 24px 20px;
+  }
+  .swatch-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .swatch {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0,0,0,.12);
+    cursor: default;
+    flex-shrink: 0;
+  }
+  .swatch:hover::after {
+    content: attr(data-hex);
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    background: var(--text-primary);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .palette-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 16px 0 8px;
+  }
+
+  /* ── SVG ICONS ─────────────────────────────────────── */
+  svg.icon { width: 22px; height: 22px; stroke: var(--text-secondary); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ── BOTTOM SHEET ──────────────────────────────────── */
+  .bottom-sheet {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-radius: 20px 20px 0 0;
+    padding: 8px 0 0;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.15);
+    z-index: 20;
+  }
+  .sheet-handle {
+    width: 36px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  /* Interest color dots */
+  .int-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* Pulse animation */
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: .6; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+  .pulse-ring {
+    position: absolute;
+    border-radius: 50%;
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -300px 0; }
+    100% { background-position: 300px 0; }
+  }
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 300px 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+  }
+
+  /* Visibility cycling button */
+  .vis-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* Screen hidden class */
+  .screen-panel { display: none; }
+  .screen-panel.active { display: flex; flex-direction: column; height: 100%; }
+
+  /* Interest grid */
+  .interest-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 16px;
+  }
+  .interest-chip-grid {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: all .12s;
+  }
+  .interest-chip-grid.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .interest-chip-grid .icon { font-size: 18px; }
+
+  /* Inline validation row */
+  .validation-row {
+    padding: 6px 16px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .validation-row.ok { color: var(--success); }
+  .validation-row.err { color: var(--error); }
+  .validation-row.neutral { color: var(--text-tertiary); }
+
+  /* ── SPECIFIC SCREEN STYLES ────────────────────────── */
+  /* S1: Welcome */
+  .welcome-hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px 16px;
+  }
+  .app-logo-big {
+    width: 80px; height: 80px;
+    border-radius: 22px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(217, 70, 239, .4);
+  }
+  .app-name-big { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text-primary); }
+  .tagline { font-size: 15px; color: var(--text-secondary); text-align: center; margin-top: 8px; line-height: 1.4; }
+
+  .oauth-btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--text-primary);
+    transition: all .12s;
+  }
+  .oauth-btn.apple { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
+  .oauth-btn.google { border-color: var(--border); }
+  .oauth-logo { width: 20px; height: 20px; border-radius: 50%; }
+
+  /* S2: Explainer */
+  .explainer-slide {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+  }
+  .slide-illustration {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .slide-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .slide-body { font-size: 15px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px; }
+  .dot-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 16px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.active { background: var(--accent); }
+  .dot.inactive { background: var(--border); border: 1.5px solid var(--border); }
+
+  /* S5: Permissions */
+  .perm-block {
+    margin: 0 16px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .perm-block.done { opacity: .6; }
+  .perm-icon-row { display: flex; align-items: center; gap: 10px; }
+  .perm-icon { width: 38px; height: 38px; border-radius: 10px; background: #F5D0FE; display: flex; align-items: center; justify-content: center; }
+  .perm-title { font-size: 16px; font-weight: 600; }
+  .perm-body { font-size: 13px; color: var(--text-secondary); line-height: 1.45; }
+  .perm-disclosure { font-size: 12px; color: var(--text-tertiary); line-height: 1.4; padding: 8px; background: var(--surface2); border-radius: 8px; }
+  .perm-result { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .perm-result.ok { color: var(--success); }
+  .perm-result.off { color: var(--text-tertiary); }
+
+  /* S6: Map */
+  .map-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .interest-filter-row {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 10px 16px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    z-index: 5;
+  }
+  .filter-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.9);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .count-bubble {
+    position: absolute;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    cursor: pointer;
+    flex-direction: column;
+  }
+  .bubble-label { font-size: 8px; font-weight: 600; opacity: .9; }
+  .user-pin {
+    position: absolute;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid #fff;
+    box-shadow: 0 4px 16px rgba(217,70,239,.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    z-index: 10;
+  }
+  .map-controls-top {
+    position: absolute;
+    top: 60px; right: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 5;
+  }
+  .map-ctrl-btn {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  }
+  .banner-strip {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    background: rgba(255,255,255,.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    z-index: 10;
+  }
+  .first-session-card {
+    position: absolute;
+    bottom: 12px; left: 16px; right: 16px;
+    background: rgba(255,255,255,.96);
+    backdrop-filter: blur(16px);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.12);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .event-pin {
+    position: absolute;
+    z-index: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+  .event-pin-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--c-outdoors);
+    border: 3px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.2);
+  }
+  .event-pin-label {
+    font-size: 9px;
+    font-weight: 700;
+    background: var(--c-outdoors);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-top: 2px;
+  }
+
+  /* S7: Interests tab */
+  .chip-scroll-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px 16px;
+    scrollbar-width: none;
+  }
+  .int-chip-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border: none;
+    cursor: pointer;
+  }
+  .activity-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .activity-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 16px; }
+  .cat-tile {
+    border-radius: 14px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .cat-icon { font-size: 24px; }
+  .cat-name { font-size: 14px; font-weight: 600; }
+  .cat-count { font-size: 11px; color: var(--text-tertiary); }
+
+  /* S8: Profile */
+  .profile-photo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 16px 12px;
+    gap: 6px;
+  }
+  .photo-circle {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 2px dashed var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    position: relative;
+  }
+  .photo-label { font-size: 13px; color: var(--accent); font-weight: 500; }
+  .profile-username { font-size: 22px; font-weight: 700; }
+  .completion-banner {
+    margin: 0 16px 8px;
+    background: #FFF7ED;
+    border: 1.5px solid #FDE68A;
+    border-radius: 12px;
+    padding: 12px 14px;
+    position: relative;
+  }
+  .comp-progress { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 6px; overflow: hidden; }
+  .comp-progress-fill { height: 100%; background: var(--warning); border-radius: 2px; }
+  .comp-text { font-size: 12px; color: #92400E; }
+  .profile-section {
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+  }
+  .profile-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .profile-field-empty { font-size: 14px; color: var(--text-tertiary); font-style: italic; }
+  .profile-field-value { font-size: 14px; color: var(--text-primary); }
+  .seg-control {
+    display: flex;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 2px;
+    gap: 2px;
+  }
+  .seg-option {
+    flex: 1;
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+  }
+  .seg-option.active { background: #fff; color: var(--text-primary); font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
+  /* S9: Interest detail */
+  .range-map {
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    margin: 12px 16px;
+  }
+  .range-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: .25;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .range-circle-border {
+    position: absolute;
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid;
+  }
+  .range-label-pill {
+    position: absolute;
+    top: 12px; right: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* S10: Count bubble sheet */
+  .discord-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .1s;
+  }
+  .discord-row:hover { background: var(--surface2); }
+  .disc-username { font-size: 15px; font-weight: 700; }
+  .disc-role { font-size: 12px; color: var(--text-tertiary); margin-top: 1px; }
+
+  /* S11: Event detail */
+  .event-meta-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .event-meta-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .event-meta-main { flex: 1; }
+  .event-meta-title { font-size: 14px; font-weight: 500; }
+  .event-meta-sub { font-size: 12px; color: var(--text-secondary); }
+  .countdown-badge {
+    position: absolute;
+    bottom: -10px; left: 50%; transform: translateX(-50%);
+    background: var(--text-primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* S12: Notification */
+  .notification-frame {
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 12px 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.12);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .notif-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .notif-body { flex: 1; }
+  .notif-title { font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+  .notif-sub { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .notif-time { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+  .notif-actions { display: flex; gap: 8px; margin-top: 10px; }
+  .notif-action-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    background: var(--surface2);
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--accent);
+    text-align: center;
+  }
+  .notif-action-btn.mute { color: var(--text-secondary); }
+  .lock-screen-bg {
+    background: linear-gradient(160deg, #1a0538, #3b0764, #4a044e);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0 16px;
+    gap: 8px;
+  }
+  .lock-time {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .lock-time .time { font-size: 64px; font-weight: 300; line-height: 1; }
+  .lock-time .date { font-size: 16px; opacity: .8; }
+
+  /* Scrollable screen content */
+  .scrollable { overflow-y: auto; flex: 1; scrollbar-width: none; }
+  .scrollable::-webkit-scrollbar { display: none; }
+
+  /* Search bar */
+  .search-bar {
+    margin: 10px 16px;
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-tertiary);
+    font-size: 15px;
+  }
+
+  /* Text input */
+  .text-input {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    font-size: 17px;
+    font-family: inherit;
+    background: var(--surface2);
+    color: var(--text-primary);
+    outline: none;
+  }
+  .text-input:focus { border-color: var(--accent); background: var(--surface); }
+  .input-hint {
+    padding: 6px 16px 0;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Spacer */
+  .spacer { flex: 1; }
+  .h8 { height: 8px; }
+  .h12 { height: 12px; }
+  .h16 { height: 16px; }
+  .h24 { height: 24px; }
+
+  .text-link { color: var(--accent); font-size: 14px; font-weight: 500; text-align: center; padding: 8px; cursor: pointer; }
+  .text-link-sm { color: var(--accent); font-size: 13px; font-weight: 500; cursor: pointer; }
+  .returning-user { font-size: 13px; color: var(--text-secondary); text-align: center; padding: 8px 16px; }
+  .returning-user a { color: var(--accent); font-weight: 500; }
+
+  /* Dismiss X */
+  .dismiss-x {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+
+  /* Action area at bottom of screen */
+  .action-area {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .action-row { display: flex; gap: 10px; }
+  .action-row .btn-primary, .action-row .btn-secondary {
+    flex: 1;
+    margin: 0;
+    width: auto;
+    height: 46px;
+    font-size: 15px;
+  }
+  .action-note { font-size: 11px; color: var(--text-tertiary); text-align: center; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ── HEADER ─────────────────────────────────────── -->
+  <header class="header">
+    <div class="logo">Squad<span>Seeker</span></div>
+    <div class="header-sub">Wireframe Preview · INF43</div>
+    <div class="header-right">
+      <button class="btn-sm ghost" onclick="showPalette()">🎨 Palette</button>
+      <button class="btn-sm ghost" id="btn-prev" onclick="navigate(-1)">← Prev</button>
+      <button class="btn-sm ghost" id="btn-next" onclick="navigate(1)">Next →</button>
+      <button class="btn-sm primary" onclick="window.open('https://www.figma.com/make','_blank')">Open in Figma Make ↗</button>
+    </div>
+  </header>
+
+  <!-- ── SIDEBAR ────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Onboarding Flow</div>
+      <button class="screen-btn active" data-screen="1" onclick="goTo(1)">
+        <span class="screen-num">1</span>Welcome / Sign-in
+      </button>
+      <button class="screen-btn" data-screen="2" onclick="goTo(2)">
+        <span class="screen-num">2</span>Explainer Slides
+      </button>
+      <button class="screen-btn" data-screen="3" onclick="goTo(3)">
+        <span class="screen-num">3</span>Username Selection
+      </button>
+      <button class="screen-btn" data-screen="4" onclick="goTo(4)">
+        <span class="screen-num">4</span>Interest Selection
+      </button>
+      <button class="screen-btn" data-screen="5" onclick="goTo(5)">
+        <span class="screen-num">5</span>Permissions
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Map States</div>
+      <button class="screen-btn" data-screen="6a" onclick="goTo('6a')">
+        <span class="screen-num" style="font-size:9px">6A</span>Map — Degraded
+      </button>
+      <button class="screen-btn" data-screen="6b" onclick="goTo('6b')">
+        <span class="screen-num" style="font-size:9px">6B</span>Map — Empty State
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Core Screens</div>
+      <button class="screen-btn" data-screen="7" onclick="goTo(7)">
+        <span class="screen-num">7</span>Interests Tab
+      </button>
+      <button class="screen-btn" data-screen="8" onclick="goTo(8)">
+        <span class="screen-num">8</span>Profile / Bio
+      </button>
+      <button class="screen-btn" data-screen="9" onclick="goTo(9)">
+        <span class="screen-num">9</span>Interest Detail
+      </button>
+      <button class="screen-btn" data-screen="10" onclick="goTo(10)">
+        <span class="screen-num">10</span>Count Bubble Sheet
+      </button>
+      <button class="screen-btn" data-screen="11" onclick="goTo(11)">
+        <span class="screen-num">11</span>Event Detail
+      </button>
+      <button class="screen-btn" data-screen="12" onclick="goTo(12)">
+        <span class="screen-num">12</span>Proximity Notification
+      </button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Design System</div>
+      <button class="screen-btn" data-screen="palette" onclick="goTo('palette')">
+        <span class="screen-num">🎨</span>Color Palette
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ───────────────────────────────────────── -->
+  <main class="main">
+    <div class="canvas-area" id="canvas">
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 1: WELCOME / SIGN-IN                 -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-1">
+        <div class="phone-label">Screen 1 · Welcome / Sign-in</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar" style="background:transparent">
+              <span style="font-size:14px;font-weight:700">9:41</span>
+              <div class="status-icons">
+                <div class="status-icon" style="width:18px;height:12px;border-radius:3px;background:currentColor;opacity:.8"></div>
+                <div class="status-icon" style="width:10px;height:10px;border-radius:50%;opacity:.6"></div>
+                <div class="status-icon" style="width:15px;height:10px;border-radius:2px;background:var(--success)"></div>
+              </div>
+            </div>
+            <div class="welcome-hero">
+              <div class="app-logo-big">🗺️</div>
+              <div class="app-name-big">SquadSeeker</div>
+              <div class="tagline">Find your people,<br>right where you are</div>
+            </div>
+            <div style="padding: 0 24px; display:flex; flex-direction:column; gap:10px; padding-bottom:8px;">
+              <button class="oauth-btn apple">
+                <svg width="17" height="20" viewBox="0 0 17 20" fill="white"><path d="M14.14 10.55c-.02-2.14 1.75-3.17 1.83-3.22-1-1.47-2.56-1.67-3.12-1.69-1.33-.13-2.6.78-3.27.78-.68 0-1.72-.76-2.83-.74-1.45.02-2.79.84-3.54 2.14-1.51 2.63-.39 6.51 1.08 8.64.72 1.04 1.57 2.2 2.69 2.16 1.08-.04 1.49-.7 2.79-.7 1.3 0 1.67.7 2.8.68 1.16-.02 1.89-1.06 2.6-2.1.82-1.2 1.16-2.36 1.18-2.42-.03-.01-2.26-.87-2.21-3.53z"/><path d="M11.97 4.34c.6-.73 1-1.74.89-2.75-.86.04-1.9.57-2.52 1.29-.55.64-.97 1.65-.85 2.62.96.07 1.93-.49 2.48-1.16z"/></svg>
+                Sign in with Apple
+              </button>
+              <button class="oauth-btn google">
+                <div style="width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#4285f4,#ea4335,#fbbc04,#34a853);display:inline-block"></div>
+                Sign in with Google
+              </button>
+              <div class="text-link">Use email instead</div>
+            </div>
+            <div class="returning-user" style="padding-bottom:20px;">
+              Already have an account? <a>Sign in</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 2: EXPLAINER SLIDES                  -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-2" style="display:none">
+        <div class="phone-label">Screen 2 · Explainer Slides</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div style="display:flex;justify-content:flex-end;padding:4px 16px 0;">
+              <span class="text-link-sm">Skip</span>
+            </div>
+            <div class="explainer-slide">
+              <div class="slide-illustration">
+                <svg width="180" height="140" viewBox="0 0 180 140">
+                  <rect width="180" height="140" rx="12" fill="#F5D0FE" opacity=".3"/>
+                  <!-- Map grid -->
+                  <rect x="20" y="20" width="60" height="30" rx="4" fill="#E8E8EE"/>
+                  <rect x="100" y="20" width="60" height="30" rx="4" fill="#E8E8EE"/>
+                  <rect x="20" y="90" width="60" height="30" rx="4" fill="#E8E8EE"/>
+                  <rect x="100" y="90" width="60" height="30" rx="4" fill="#E8E8EE"/>
+                  <!-- Roads -->
+                  <rect x="0" y="56" width="180" height="8" fill="white" opacity=".8"/>
+                  <rect x="86" y="0" width="8" height="140" fill="white" opacity=".8"/>
+                  <!-- Pin A -->
+                  <circle cx="55" cy="72" r="14" fill="var(--accent)" opacity=".9"/>
+                  <text x="55" y="77" text-anchor="middle" font-size="14" fill="white">👤</text>
+                  <!-- Pin B -->
+                  <circle cx="125" cy="72" r="14" fill="var(--c-outdoors)" opacity=".9"/>
+                  <text x="125" y="77" text-anchor="middle" font-size="14" fill="white">👤</text>
+                  <!-- Dashed line connecting them -->
+                  <line x1="69" y1="72" x2="111" y2="72" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4,3"/>
+                  <text x="90" y="50" text-anchor="middle" font-size="10" fill="var(--accent)" font-weight="600">0.3 mi</text>
+                </svg>
+              </div>
+              <div class="slide-title">Meet people nearby</div>
+              <div class="slide-body">SquadSeeker shows you people in your area who share your hobbies and interests — in real time, right on the map.</div>
+              <div class="dot-row">
+                <div class="dot active"></div>
+                <div class="dot inactive"></div>
+                <div class="dot inactive"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 3: USERNAME SELECTION                -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-3" style="display:none">
+        <div class="phone-label">Screen 3 · Username Selection</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div class="screen-content">
+              <div class="progress-bar-steps">
+                <div class="step-seg done"></div>
+                <div class="step-seg active"></div>
+                <div class="step-seg"></div>
+              </div>
+              <div class="h24"></div>
+              <div style="padding: 0 16px 20px;">
+                <div style="font-size:26px;font-weight:700;margin-bottom:8px;">Choose a username</div>
+                <div style="font-size:14px;color:var(--text-secondary);line-height:1.5;">This is how you'll appear to other Squad Seeker users. You can't change it later.</div>
+              </div>
+              <div style="position:relative;margin:0 16px;">
+                <input class="text-input" style="width:100%;margin:0;padding-right:60px;" type="text" placeholder="e.g. trail_anna" value="trail_ann"/>
+                <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--text-tertiary);font-family:'Space Mono',monospace;">10 / 30</span>
+              </div>
+              <div class="validation-row ok">
+                <span>✓</span> Available!
+              </div>
+              <div class="h24"></div>
+              <button class="btn-primary">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 4: INTEREST SELECTION                -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-4" style="display:none">
+        <div class="phone-label">Screen 4 · Interest Selection</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div class="progress-bar-steps" style="padding:8px 16px 0">
+              <div class="step-seg done"></div>
+              <div class="step-seg done"></div>
+              <div class="step-seg active"></div>
+            </div>
+            <div style="padding: 12px 16px 8px;">
+              <div style="font-size:24px;font-weight:700;">What are you into?</div>
+              <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">We'll show you people nearby who share your interests. Add more anytime.</div>
+            </div>
+            <div class="search-bar" style="margin:4px 16px 8px;">
+              🔍 Search all interests
+            </div>
+            <div class="screen-content" style="flex:1">
+              <div class="interest-grid">
+                <div class="interest-chip-grid selected">
+                  <span class="icon">🥾</span><span>Hiking</span>
+                </div>
+                <div class="interest-chip-grid selected">
+                  <span class="icon">🚲</span><span>Cycling</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">🎸</span><span>Guitar</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">🏓</span><span>Pickleball</span>
+                </div>
+                <div class="interest-chip-grid selected">
+                  <span class="icon">☕</span><span>Coffee</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">📸</span><span>Photography</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">🎮</span><span>Gaming</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">🏊</span><span>Swimming</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">🎨</span><span>Art</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">🧘</span><span>Yoga</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">🎵</span><span>Music</span>
+                </div>
+                <div class="interest-chip-grid">
+                  <span class="icon">🍜</span><span>Food</span>
+                </div>
+              </div>
+            </div>
+            <div style="padding:10px 16px 12px;border-top:1px solid var(--border);">
+              <button class="btn-primary" style="width:100%;margin:0;position:relative;">
+                Continue (3 selected)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 5: PERMISSIONS                       -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-5" style="display:none">
+        <div class="phone-label">Screen 5 · Permissions</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div class="screen-content">
+              <div style="padding:16px 16px 20px;">
+                <div style="font-size:24px;font-weight:700;margin-bottom:8px;">A couple of quick permissions</div>
+                <div style="font-size:14px;color:var(--text-secondary);">Squad Seeker works best with both — here's what each one does.</div>
+              </div>
+              <!-- Location block - done -->
+              <div class="perm-block done">
+                <div class="perm-icon-row">
+                  <div class="perm-icon">📍</div>
+                  <div>
+                    <div class="perm-title">Your location</div>
+                  </div>
+                </div>
+                <div class="perm-result ok">✓ Location allowed — Always</div>
+              </div>
+              <!-- Divider -->
+              <div style="height:1px;background:var(--border);margin:4px 16px;"></div>
+              <!-- Notifications block - active -->
+              <div class="perm-block">
+                <div class="perm-icon-row">
+                  <div class="perm-icon">🔔</div>
+                  <div>
+                    <div class="perm-title">Notifications</div>
+                  </div>
+                </div>
+                <div class="perm-body">So we can alert you when someone with a shared interest is nearby, even when you're not looking at the app.</div>
+                <div class="perm-disclosure">If you skip this, you can still find matches — you'll just need to open the app to see them.</div>
+                <button class="btn-primary" style="width:100%;margin:0;height:44px;font-size:15px;">Allow Notifications</button>
+              </div>
+              <div class="h24"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 6A: MAP DEGRADED                     -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-6a" style="display:none">
+        <div class="phone-label">Screen 6A · Map — Location Denied</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <!-- Persistent banner -->
+            <div class="banner-strip" style="position:relative;top:auto;border-bottom:1px solid var(--border);">
+              <span style="font-size:14px;">📍</span>
+              <span style="flex:1;font-size:12px;">Location is off — find people nearby in Settings</span>
+              <span class="text-link-sm">Enable</span>
+            </div>
+            <!-- Map (greyed) -->
+            <div class="map-container" style="opacity:.6">
+              <div class="map-bg" style="position:absolute;inset:0;">
+                <div class="map-road-h" style="top:38%;left:0;right:0;"></div>
+                <div class="map-road-h" style="top:65%;left:0;right:0;"></div>
+                <div class="map-road-v" style="left:35%;top:0;bottom:0;"></div>
+                <div class="map-road-v" style="left:65%;top:0;bottom:0;"></div>
+                <div class="map-block" style="top:10%;left:10%;width:23%;height:26%;"></div>
+                <div class="map-block" style="top:10%;left:40%;width:23%;height:26%;"></div>
+                <div class="map-block" style="top:10%;left:70%;width:20%;height:26%;"></div>
+                <div class="map-block" style="top:48%;left:10%;width:23%;height:15%;"></div>
+                <div class="map-block" style="top:48%;left:40%;width:23%;height:15%;"></div>
+                <div class="map-block" style="top:70%;left:10%;width:23%;height:20%;"></div>
+                <div class="map-block" style="top:70%;left:40%;width:23%;height:20%;"></div>
+                <div class="map-block" style="top:70%;left:70%;width:20%;height:20%;"></div>
+              </div>
+            </div>
+            <!-- Bottom sheet -->
+            <div class="bottom-sheet" style="padding-bottom:20px;">
+              <div class="sheet-handle"></div>
+              <div style="text-align:center;padding:8px 24px;">
+                <div style="font-size:48px;margin-bottom:8px;">📍</div>
+                <div style="font-size:20px;font-weight:700;margin-bottom:8px;">Location is off.</div>
+                <div style="font-size:14px;color:var(--text-secondary);line-height:1.5;margin-bottom:6px;">
+                  Squad Seeker needs your location to show you people nearby. You can turn it on in your iPhone Settings anytime.
+                </div>
+                <div style="font-size:12px;color:var(--text-tertiary);margin-bottom:16px;">
+                  Without location, you can still browse interests and chat with friends.
+                </div>
+              </div>
+              <div style="padding:0 16px;display:flex;flex-direction:column;gap:10px;">
+                <button class="btn-primary" style="width:100%;margin:0;">Enable Location</button>
+                <button class="btn-secondary" style="width:100%;margin:0;height:46px;font-size:15px;">Not now</button>
+              </div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab-item active"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><span class="tab-label">Map</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></div><span class="tab-label">Interests</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span class="tab-label">Chats</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="tab-label">Profile</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 6B: MAP EMPTY STATE                  -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-6b" style="display:none">
+        <div class="phone-label">Screen 6B · Map — Empty State</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div class="map-container">
+              <!-- Map base -->
+              <div class="map-bg" style="position:absolute;inset:0;">
+                <div class="map-road-h" style="top:40%;left:0;right:0;"></div>
+                <div class="map-road-h" style="top:65%;left:0;right:0;"></div>
+                <div class="map-road-v" style="left:33%;top:0;bottom:0;"></div>
+                <div class="map-road-v" style="left:66%;top:0;bottom:0;"></div>
+                <div class="map-block" style="top:8%;left:5%;width:26%;height:30%;"></div>
+                <div class="map-block" style="top:8%;left:38%;width:26%;height:30%;"></div>
+                <div class="map-block" style="top:8%;left:70%;width:25%;height:30%;"></div>
+                <div class="map-block" style="top:47%;left:5%;width:26%;height:16%;"></div>
+                <div class="map-block" style="top:47%;left:38%;width:26%;height:16%;"></div>
+                <div class="map-block" style="top:70%;left:5%;width:26%;height:22%;"></div>
+                <div class="map-block" style="top:70%;left:38%;width:26%;height:22%;"></div>
+                <div class="map-block" style="top:70%;left:70%;width:25%;height:22%;"></div>
+              </div>
+              <!-- Interest filter row -->
+              <div class="interest-filter-row">
+                <div class="filter-pill"><span style="color:var(--c-outdoors)">●</span> Hiking</div>
+                <div class="filter-pill"><span style="color:var(--c-sports)">●</span> Cycling</div>
+                <div class="filter-pill"><span style="color:var(--c-food)">●</span> Coffee</div>
+              </div>
+              <!-- Map controls -->
+              <div class="map-controls-top" style="top:55px;">
+                <div class="map-ctrl-btn" style="font-size:14px;">👥</div>
+                <div class="map-ctrl-btn" style="font-size:16px;">＋</div>
+                <div class="map-ctrl-btn" style="font-size:16px;">－</div>
+              </div>
+              <!-- User pin with pulse -->
+              <div class="user-pin" style="top:42%;left:44%;font-size:20px;">
+                <div class="pulse-ring" style="width:48px;height:48px;background:var(--accent);top:0;left:0;"></div>
+                🧑
+              </div>
+              <!-- Recenter btn -->
+              <div class="map-ctrl-btn" style="position:absolute;bottom:72px;right:12px;z-index:5;width:44px;height:44px;font-size:18px;">🎯</div>
+              <!-- First session card -->
+              <div class="first-session-card">
+                <span style="font-size:20px;">✅</span>
+                <span style="flex:1;font-size:13px;color:var(--text-secondary);">You're all set. We'll notify you when someone nearby shares your interests.</span>
+                <div class="dismiss-x">✕</div>
+              </div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab-item active"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><span class="tab-label">Map</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></div><span class="tab-label">Interests</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span class="tab-label">Chats</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="tab-label">Profile</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 7: INTERESTS TAB                     -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-7" style="display:none">
+        <div class="phone-label">Screen 7 · Interests Tab</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div class="nav-bar" style="border-bottom:none;">
+              <div style="font-size:28px;font-weight:800;padding:0 4px;">Interests</div>
+              <div style="margin-left:auto;font-size:20px;cursor:pointer;">🔍</div>
+            </div>
+            <div class="scrollable">
+              <!-- My Interests pinned row -->
+              <div style="padding:0 16px 4px;display:flex;justify-content:space-between;align-items:center;">
+                <div class="section-header" style="padding:8px 0 4px;">My Interests</div>
+                <span style="font-size:13px;color:var(--text-tertiary);">3</span>
+              </div>
+              <div class="chip-scroll-row">
+                <div class="int-chip-row" style="background:#DCFCE7;color:var(--c-outdoors);">
+                  <div class="int-dot" style="background:var(--c-outdoors)"></div>🥾 Hiking
+                </div>
+                <div class="int-chip-row" style="background:#DBEAFE;color:var(--c-sports);">
+                  <div class="int-dot" style="background:var(--c-sports)"></div>🚲 Cycling
+                </div>
+                <div class="int-chip-row" style="background:#FEF3C7;color:var(--c-food);">
+                  <div class="int-dot" style="background:var(--c-food)"></div>☕ Coffee
+                </div>
+              </div>
+              <!-- Coach mark tooltip -->
+              <div style="margin:4px 16px 8px;background:#FEF9C3;border:1px solid #FDE047;border-radius:10px;padding:8px 12px;font-size:12px;color:#713F12;display:flex;align-items:center;gap:8px;">
+                👆 <span>Long-press any interest to adjust visibility or notifications</span>
+              </div>
+              <!-- Popular Near You -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 16px 4px;">
+                <div class="section-header" style="padding:0;">📍 Popular Near You</div>
+                <span style="font-size:11px;color:var(--text-tertiary);">Updated just now</span>
+              </div>
+              <div class="activity-card">
+                <div class="activity-icon" style="background:#DCFCE7;">🏓</div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:600;">Pickleball</div>
+                  <div style="font-size:12px;color:var(--success);">● High activity near you</div>
+                </div>
+                <div class="list-chevron">›</div>
+              </div>
+              <div class="activity-card">
+                <div class="activity-icon" style="background:#DBEAFE;">🎮</div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:600;">Gaming</div>
+                  <div style="font-size:12px;color:var(--warning);">● Moderate activity near you</div>
+                </div>
+                <div class="list-chevron">›</div>
+              </div>
+              <div class="activity-card">
+                <div class="activity-icon" style="background:#F3E8FF;">🎨</div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:600;">Art</div>
+                  <div style="font-size:12px;color:var(--warning);">● Moderate activity near you</div>
+                </div>
+                <div class="list-chevron">›</div>
+              </div>
+              <!-- Browse by Category -->
+              <div class="section-header" style="padding-top:12px;">Browse by Category</div>
+              <div class="cat-grid">
+                <div class="cat-tile" style="background:#DCFCE7;">
+                  <div class="cat-icon">🏔️</div>
+                  <div class="cat-name">Outdoors</div>
+                  <div class="cat-count">18 interests</div>
+                </div>
+                <div class="cat-tile" style="background:#DBEAFE;">
+                  <div class="cat-icon">⚽</div>
+                  <div class="cat-name">Sports</div>
+                  <div class="cat-count">24 interests</div>
+                </div>
+                <div class="cat-tile" style="background:#EDE9FE;">
+                  <div class="cat-icon">🎵</div>
+                  <div class="cat-name">Music</div>
+                  <div class="cat-count">15 interests</div>
+                </div>
+                <div class="cat-tile" style="background:#FEF3C7;">
+                  <div class="cat-icon">🍕</div>
+                  <div class="cat-name">Food & Drink</div>
+                  <div class="cat-count">12 interests</div>
+                </div>
+                <div class="cat-tile" style="background:#F3E8FF;">
+                  <div class="cat-icon">🎨</div>
+                  <div class="cat-name">Arts</div>
+                  <div class="cat-count">11 interests</div>
+                </div>
+                <div class="cat-tile" style="background:#CCFBF1;">
+                  <div class="cat-icon">💻</div>
+                  <div class="cat-name">Technology</div>
+                  <div class="cat-count">9 interests</div>
+                </div>
+              </div>
+              <div class="h24"></div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><span class="tab-label">Map</span></div>
+              <div class="tab-item active"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></div><span class="tab-label">Interests</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span class="tab-label">Chats</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="tab-label">Profile</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 8: PROFILE / BIO                     -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-8" style="display:none">
+        <div class="phone-label">Screen 8 · Profile / Bio</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div class="nav-bar">
+              <div style="width:40px;"></div>
+              <div class="nav-title">Profile</div>
+              <div class="nav-action">Edit</div>
+            </div>
+            <div class="scrollable">
+              <!-- Completion banner -->
+              <div class="completion-banner">
+                <div class="comp-progress"><div class="comp-progress-fill" style="width:25%;"></div></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <div class="comp-text">25% complete — add a photo and tags to help others find you</div>
+                  <span style="font-size:16px;cursor:pointer;color:#92400E;">✕</span>
+                </div>
+              </div>
+              <!-- Photo area -->
+              <div class="profile-photo-area">
+                <div class="photo-circle">
+                  <span style="font-size:28px;color:var(--text-tertiary);">📷</span>
+                  <div class="photo-label">Add photo</div>
+                </div>
+                <div class="profile-username">trail_anna</div>
+                <!-- Interest chips row -->
+                <div class="chip-scroll-row" style="padding:4px 0;justify-content:center;flex-wrap:wrap;gap:6px;">
+                  <div class="chip" style="background:var(--c-outdoors);color:#fff;font-size:12px;">🥾 Hiking</div>
+                  <div class="chip" style="background:var(--c-sports);color:#fff;font-size:12px;">🚲 Cycling</div>
+                  <div class="chip" style="background:var(--c-food);color:#fff;font-size:12px;">☕ Coffee</div>
+                </div>
+              </div>
+              <!-- Pronouns section -->
+              <div class="profile-section">
+                <div class="profile-section-header">
+                  <div class="section-header" style="padding:0;">Pronouns</div>
+                  <button class="vis-btn">👥 Friends only</button>
+                </div>
+                <div class="profile-field-empty">Not set</div>
+              </div>
+              <!-- Experience level -->
+              <div class="profile-section">
+                <div class="profile-section-header">
+                  <div class="section-header" style="padding:0;">Experience Level</div>
+                  <button class="vis-btn">🌐 Public</button>
+                </div>
+                <div class="seg-control">
+                  <div class="seg-option">Beginner</div>
+                  <div class="seg-option active">Intermediate</div>
+                  <div class="seg-option">Advanced</div>
+                  <div class="seg-option">Expert</div>
+                </div>
+              </div>
+              <!-- Tags section -->
+              <div class="profile-section">
+                <div class="profile-section-header">
+                  <div class="section-header" style="padding:0;">I'm Looking For</div>
+                  <button class="vis-btn">🌐 Public</button>
+                </div>
+                <div class="profile-field-empty">Add tags to tell others what you're looking for</div>
+                <div class="h8"></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <div class="chip outlined" style="font-size:12px;">LFG</div>
+                  <div class="chip outlined" style="font-size:12px;">Open Availability</div>
+                  <div class="chip outlined" style="font-size:12px;">Casual meetup</div>
+                  <div class="chip outlined" style="font-size:12px;">+ Add tags</div>
+                </div>
+              </div>
+              <!-- Future fields -->
+              <div class="profile-section">
+                <div style="border:1.5px dashed var(--border);border-radius:10px;padding:12px;text-align:center;color:var(--text-tertiary);font-size:13px;">More fields coming soon</div>
+              </div>
+              <div class="h12"></div>
+              <div class="text-link">Manage Interests</div>
+              <div style="text-align:center;padding:6px 0 20px;font-size:14px;color:var(--text-tertiary);">Sign Out</div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><span class="tab-label">Map</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></div><span class="tab-label">Interests</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span class="tab-label">Chats</span></div>
+              <div class="tab-item active"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="tab-label">Profile</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 9: INTEREST DETAIL                   -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-9" style="display:none">
+        <div class="phone-label">Screen 9 · Interest Detail</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div class="nav-bar">
+              <div class="nav-back"><svg viewBox="0 0 10 16"><polyline points="8,1 2,8 8,15" stroke-width="2.5"/></svg> Outdoors</div>
+              <div class="nav-title">Hiking</div>
+              <div style="width:40px;"></div>
+            </div>
+            <div class="scrollable">
+              <!-- Header block -->
+              <div style="display:flex;flex-direction:column;align-items:center;padding:20px 16px 8px;gap:6px;">
+                <div style="width:68px;height:68px;border-radius:18px;background:#DCFCE7;display:flex;align-items:center;justify-content:center;font-size:32px;">🥾</div>
+                <div style="font-size:22px;font-weight:700;">Hiking</div>
+                <div style="font-size:14px;color:var(--text-tertiary);">Outdoors</div>
+              </div>
+              <!-- Range map -->
+              <div class="range-map">
+                <div class="map-bg" style="position:absolute;inset:0;">
+                  <div class="map-block" style="top:5%;left:5%;width:28%;height:35%;"></div>
+                  <div class="map-block" style="top:5%;left:68%;width:27%;height:35%;"></div>
+                  <div class="map-block" style="top:60%;left:5%;width:28%;height:35%;"></div>
+                  <div class="map-block" style="top:60%;left:68%;width:27%;height:35%;"></div>
+                  <div class="map-road-h" style="top:46%;left:0;right:0;"></div>
+                  <div class="map-road-v" style="left:38%;top:0;bottom:0;"></div>
+                </div>
+                <!-- Range circle -->
+                <div class="range-circle" style="width:130px;height:130px;background:var(--c-outdoors);top:50%;left:50%;"></div>
+                <div class="range-circle-border" style="width:130px;height:130px;border-color:var(--c-outdoors);"></div>
+                <!-- User pin -->
+                <div class="user-pin" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;font-size:14px;z-index:5;">🧑</div>
+                <!-- Range label -->
+                <div class="range-label-pill" style="background:var(--c-outdoors);">2 mi radius</div>
+              </div>
+              <!-- Activity indicator -->
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface2);margin:0 16px;border-radius:10px;">
+                <span style="color:var(--success);font-weight:700;">●</span>
+                <span style="font-size:13px;color:var(--c-outdoors);font-weight:600;">High activity near you</span>
+              </div>
+              <div class="h12"></div>
+              <!-- Subscribe area -->
+              <div style="padding:0 16px;">
+                <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--border);">
+                  <div class="chip filled" style="font-size:13px;">✓ Subscribed</div>
+                  <div class="spacer"></div>
+                  <span style="color:var(--error);font-size:14px;cursor:pointer;">Unsubscribe</span>
+                </div>
+                <div class="section-header" style="padding:8px 0 4px;">Your Settings</div>
+                <div class="list-row" style="padding:10px 0;">
+                  <span style="font-size:20px;">🌐</span>
+                  <div class="list-row-main">
+                    <div class="list-row-title" style="font-size:14px;">Visible to</div>
+                  </div>
+                  <span style="color:var(--accent);font-size:14px;font-weight:500;">Friends only ›</span>
+                </div>
+                <div class="list-row" style="padding:10px 0;border-bottom:none;">
+                  <span style="font-size:20px;">🔔</span>
+                  <div class="list-row-main">
+                    <div class="list-row-title" style="font-size:14px;">Notifications</div>
+                  </div>
+                  <span style="color:var(--accent);font-size:14px;font-weight:500;">Live ›</span>
+                </div>
+              </div>
+              <div class="h24"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 10: COUNT BUBBLE SHEET               -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-10" style="display:none">
+        <div class="phone-label">Screen 10 · Count Bubble Sheet</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <!-- Map background (peek area, 25%) -->
+            <div style="height:120px;position:relative;overflow:hidden;flex-shrink:0;">
+              <div class="map-bg" style="position:absolute;inset:0;">
+                <div class="map-block" style="top:5%;left:10%;width:35%;height:80%;"></div>
+                <div class="map-block" style="top:5%;left:55%;width:35%;height:80%;"></div>
+              </div>
+              <div style="position:absolute;inset:0;background:rgba(0,0,0,.2);"></div>
+              <!-- Highlighted count bubble with pulsing ring -->
+              <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                <div style="position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;">
+                  <div class="pulse-ring" style="width:64px;height:64px;background:var(--c-outdoors);border-radius:50%;position:absolute;"></div>
+                  <div class="count-bubble" style="position:relative;width:56px;height:56px;background:var(--c-outdoors);border:3px solid #fff;">
+                    <span style="font-size:16px;font-weight:800;">3</span>
+                    <span class="bubble-label">Hikers</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Bottom sheet -->
+            <div style="flex:1;background:var(--surface);border-radius:20px 20px 0 0;margin-top:-12px;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(0,0,0,.15);z-index:10;">
+              <div class="sheet-handle"></div>
+              <!-- Header -->
+              <div style="display:flex;align-items:center;gap:10px;padding:0 16px 12px;border-bottom:1px solid var(--border);">
+                <div style="width:32px;height:32px;border-radius:8px;background:#DCFCE7;display:flex;align-items:center;justify-content:center;font-size:16px;">🥾</div>
+                <div style="font-size:16px;font-weight:700;">Hiking <span style="color:var(--text-tertiary);font-weight:400;">(3)</span></div>
+                <div class="spacer"></div>
+                <div class="dismiss-x">✕</div>
+              </div>
+              <!-- Discord-style rows -->
+              <div class="scrollable" style="flex:1;">
+                <div class="discord-row">
+                  <div class="avatar" style="width:42px;height:42px;font-size:16px;background:linear-gradient(135deg,#86efac,#16a34a);">T</div>
+                  <div style="flex:1;">
+                    <div class="disc-username" style="color:var(--c-outdoors);">trail_walker42</div>
+                    <div class="disc-role">Intermediate · via Hiking</div>
+                  </div>
+                  <div style="color:var(--text-tertiary);font-size:18px;">···</div>
+                </div>
+                <div class="discord-row" style="background:var(--surface2);">
+                  <div class="avatar" style="width:42px;height:42px;font-size:16px;background:linear-gradient(135deg,#a5f3fc,#0d9488);">M</div>
+                  <div style="flex:1;">
+                    <div class="disc-username" style="color:var(--c-outdoors);">mountain_mk</div>
+                    <div class="disc-role">Advanced · via Hiking</div>
+                  </div>
+                  <div style="color:var(--text-tertiary);font-size:18px;">···</div>
+                </div>
+                <div class="discord-row">
+                  <div class="avatar" style="width:42px;height:42px;font-size:16px;background:linear-gradient(135deg,#bbf7d0,#16a34a);">S</div>
+                  <div style="flex:1;">
+                    <div class="disc-username" style="color:var(--c-outdoors);">sierra_s</div>
+                    <div class="disc-role">Beginner · via Hiking</div>
+                  </div>
+                  <div style="color:var(--text-tertiary);font-size:18px;">···</div>
+                </div>
+                <!-- Context menu preview -->
+                <div style="margin:16px;background:rgba(0,0,0,.04);border-radius:14px;overflow:hidden;border:1px solid var(--border);">
+                  <div style="padding:8px 16px;font-size:11px;color:var(--text-tertiary);font-weight:600;text-transform:uppercase;letter-spacing:.06em;">Hold to reveal actions</div>
+                  <div style="padding:12px 16px;border-top:1px solid var(--border);font-size:14px;color:var(--text-primary);">👤 View Profile</div>
+                  <div style="padding:12px 16px;border-top:1px solid var(--border);font-size:14px;color:var(--accent);">➕ Send Friend Request</div>
+                  <div style="padding:12px 16px;border-top:1px solid var(--border);font-size:14px;color:var(--accent);">💬 Message</div>
+                  <div style="padding:12px 16px;border-top:1px solid var(--border);font-size:14px;color:var(--error);">🚫 Block</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 11: EVENT DETAIL                     -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-11" style="display:none">
+        <div class="phone-label">Screen 11 · Event Detail</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="status-bar"><span style="font-size:14px;font-weight:700">9:41</span></div>
+            <div class="nav-bar">
+              <div class="nav-back"><svg viewBox="0 0 10 16"><polyline points="8,1 2,8 8,15" stroke-width="2.5"/></svg> Map</div>
+              <div class="nav-title" style="font-size:15px;">Morning Ridge Walk</div>
+              <div style="font-size:20px;margin-left:auto;cursor:pointer;">···</div>
+            </div>
+            <div class="scrollable" style="flex:1;">
+              <!-- Map thumbnail with event pin -->
+              <div class="range-map" style="height:150px;margin:0;border-radius:0;">
+                <div class="map-bg" style="position:absolute;inset:0;">
+                  <div class="map-block" style="top:5%;left:10%;width:30%;height:40%;"></div>
+                  <div class="map-block" style="top:55%;left:55%;width:30%;height:40%;"></div>
+                  <div class="map-road-h" style="top:50%;left:0;right:0;"></div>
+                  <div class="map-road-v" style="left:45%;top:0;bottom:0;"></div>
+                </div>
+                <!-- Event pin -->
+                <div class="event-pin" style="top:28%;left:48%;transform:translate(-50%,-50%);">
+                  <div class="event-pin-icon" style="position:relative;">
+                    🥾
+                    <div class="pulse-ring" style="width:40px;height:40px;background:var(--c-outdoors);top:50%;left:50%;transform:translate(-50%,-50%);position:absolute;"></div>
+                  </div>
+                  <div class="countdown-badge" style="position:relative;bottom:auto;left:auto;transform:none;margin-top:4px;">Starts in 1h 22m</div>
+                </div>
+                <!-- User pin -->
+                <div class="user-pin" style="position:absolute;top:65%;left:65%;transform:translate(-50%,-50%);width:32px;height:32px;font-size:14px;">🧑</div>
+                <!-- Distance pill -->
+                <div style="position:absolute;bottom:10px;right:12px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">0.4 mi from you</div>
+              </div>
+              <div style="text-align:right;padding:6px 16px 0;">
+                <span class="text-link-sm">View on Map</span>
+              </div>
+              <!-- Event metadata -->
+              <div class="event-meta-row" style="padding:14px 16px;">
+                <div style="flex:1;">
+                  <div style="font-size:20px;font-weight:700;margin-bottom:6px;">Morning Ridge Walk</div>
+                  <div class="chip" style="background:#DCFCE7;color:var(--c-outdoors);font-size:12px;">🥾 Hiking</div>
+                </div>
+              </div>
+              <div class="event-meta-row">
+                <div class="event-meta-icon">📅</div>
+                <div class="event-meta-main">
+                  <div class="event-meta-title">Saturday, May 30 · 7:00 AM</div>
+                  <div class="event-meta-sub">Auto-expires at 9:00 AM</div>
+                </div>
+              </div>
+              <div class="event-meta-row">
+                <div class="event-meta-icon">👤</div>
+                <div class="event-meta-main">
+                  <div class="event-meta-title">Hosted by <span style="color:var(--accent);">trail_anna</span></div>
+                </div>
+              </div>
+              <div class="event-meta-row">
+                <div class="event-meta-icon">👥</div>
+                <div class="event-meta-main">
+                  <div class="event-meta-title">4 going</div>
+                  <div class="event-meta-sub">RSVP optional — you can attend without marking yourself</div>
+                </div>
+              </div>
+              <div class="event-meta-row" style="border-bottom:none;">
+                <div class="event-meta-icon">🌐</div>
+                <div class="event-meta-main">
+                  <div class="event-meta-title">Public event</div>
+                </div>
+              </div>
+            </div>
+            <!-- Action area: prospective attendee state -->
+            <div class="action-area">
+              <button class="btn-primary" style="width:100%;margin:0;">I'm Going</button>
+              <div class="action-note">RSVP to join the event chat and get a reminder 30 minutes before.</div>
+            </div>
+            <div class="tab-bar" style="padding-bottom:12px;">
+              <div class="tab-item active"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div><span class="tab-label">Map</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg></div><span class="tab-label">Interests</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span class="tab-label">Chats</span></div>
+              <div class="tab-item"><div class="tab-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="tab-label">Profile</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- SCREEN 12: PROXIMITY ALERT NOTIFICATION     -->
+      <!-- ════════════════════════════════════════════ -->
+      <div class="phone-wrap" id="panel-12" style="display:none">
+        <div class="phone-label">Screen 12 · Proximity Alert Notification</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <!-- Lock screen -->
+            <div class="status-bar" style="background:transparent;position:absolute;top:0;left:0;right:0;z-index:20;color:#fff;">
+              <span style="font-size:14px;font-weight:700;">9:41</span>
+              <div class="status-icons" style="filter:brightness(10);">
+                <div class="status-icon"></div>
+                <div class="status-icon" style="border-radius:50%;width:10px;height:10px;"></div>
+                <div class="status-icon" style="background:white;"></div>
+              </div>
+            </div>
+            <div class="lock-screen-bg">
+              <div class="lock-time" style="padding-top:44px;">
+                <div class="time">9:41</div>
+                <div class="date">Tuesday, May 26</div>
+              </div>
+              <!-- Primary notification -->
+              <div class="notification-frame">
+                <div class="notif-icon" style="background:var(--c-outdoors);">🥾</div>
+                <div class="notif-body">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;">SquadSeeker</div>
+                    <div style="font-size:11px;color:var(--text-tertiary);">now</div>
+                  </div>
+                  <div class="notif-title">3 people near you share your interest in Hiking</div>
+                  <div class="notif-sub">Tap to see who's nearby on the map.</div>
+                  <div class="notif-actions">
+                    <button class="notif-action-btn">Open Map</button>
+                    <button class="notif-action-btn mute">Mute Hiking</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Secondary notification (batched) -->
+              <div class="notification-frame" style="opacity:.7;margin-top:0px;">
+                <div class="notif-icon" style="background:var(--accent);">🗺️</div>
+                <div class="notif-body">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;">SquadSeeker</div>
+                    <div style="font-size:11px;color:var(--text-tertiary);">2m ago</div>
+                  </div>
+                  <div class="notif-title">People near you share your interests</div>
+                  <div class="notif-sub">Hiking, Cycling, and Coffee</div>
+                </div>
+              </div>
+              <!-- Legend -->
+              <div style="margin:0 16px;background:rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;">
+                <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Notification Anatomy</div>
+                <div style="font-size:12px;color:rgba(255,255,255,.8);line-height:1.7;">
+                  <div>🎨 <strong style="color:#fff;">Icon color</strong> = interest color (maps to bubble)</div>
+                  <div>📝 <strong style="color:#fff;">Title</strong> = count + interest name</div>
+                  <div>🔗 <strong style="color:#fff;">Open Map</strong> → deep-link to count bubble</div>
+                  <div>🔕 <strong style="color:#fff;">Mute</strong> → silent API call, no app open</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════ -->
+      <!-- PALETTE PANEL                               -->
+      <!-- ════════════════════════════════════════════ -->
+      <div id="panel-palette" style="display:none;padding:0 16px 60px;max-width:900px;width:100%;">
+        <div style="font-size:28px;font-weight:800;margin-bottom:4px;">Color Palette</div>
+        <div style="font-size:14px;color:var(--text-secondary);margin-bottom:32px;">Design token reference for SquadSeeker. Hover swatches to see hex values.</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+          <div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px;">Brand & UI</div>
+            <div class="palette-section-title">Primary Accent (Fuchsia)</div>
+            <div class="swatch-row" style="margin-bottom:24px;">
+              <div class="swatch" style="background:#F0ABFC;" data-hex="#F0ABFC" title="accent-100"></div>
+              <div class="swatch" style="background:#E879F9;" data-hex="#E879F9" title="accent-300"></div>
+              <div class="swatch" style="background:#D946EF;" data-hex="#D946EF" title="accent — primary"></div>
+              <div class="swatch" style="background:#A21CAF;" data-hex="#A21CAF" title="accent-700"></div>
+              <div class="swatch" style="background:#701A75;" data-hex="#701A75" title="accent-900"></div>
+            </div>
+
+            <div class="palette-section-title">Neutral Surfaces — Light Mode</div>
+            <div class="swatch-row" style="margin-bottom:24px;">
+              <div class="swatch" style="background:#FFFFFF;border:1px solid #eee;" data-hex="#FFFFFF" title="surface"></div>
+              <div class="swatch" style="background:#F2F2F7;" data-hex="#F2F2F7" title="surface-2"></div>
+              <div class="swatch" style="background:#E5E5EA;" data-hex="#E5E5EA" title="border"></div>
+              <div class="swatch" style="background:#AEAEB2;" data-hex="#AEAEB2" title="text-tertiary"></div>
+              <div class="swatch" style="background:#636366;" data-hex="#636366" title="text-secondary"></div>
+              <div class="swatch" style="background:#1C1C1E;" data-hex="#1C1C1E" title="text-primary"></div>
+            </div>
+
+            <div class="palette-section-title">Neutral Surfaces — Dark Mode</div>
+            <div class="swatch-row" style="margin-bottom:24px;">
+              <div class="swatch" style="background:#1C1C1E;" data-hex="#1C1C1E" title="bg-dark"></div>
+              <div class="swatch" style="background:#2C2C2E;" data-hex="#2C2C2E" title="surface-dark"></div>
+              <div class="swatch" style="background:#3A3A3C;" data-hex="#3A3A3C" title="surface2-dark"></div>
+              <div class="swatch" style="background:#48484A;" data-hex="#48484A" title="border-dark"></div>
+              <div class="swatch" style="background:#AEAEB2;" data-hex="#AEAEB2" title="text-secondary-dark"></div>
+              <div class="swatch" style="background:#FFFFFF;" data-hex="#FFFFFF" title="text-primary-dark"></div>
+            </div>
+
+            <div class="palette-section-title">Semantic Colors</div>
+            <div class="swatch-row" style="margin-bottom:24px;">
+              <div class="swatch" style="background:#16A34A;" data-hex="#16A34A" title="success"></div>
+              <div class="swatch" style="background:#DC2626;" data-hex="#DC2626" title="error"></div>
+              <div class="swatch" style="background:#CA8A04;" data-hex="#CA8A04" title="warning (range: local 1-5mi)"></div>
+              <div class="swatch" style="background:#2563EB;" data-hex="#2563EB" title="info"></div>
+            </div>
+
+            <div class="palette-section-title">Range Cap Circle Scale</div>
+            <div style="margin-bottom:24px;">
+              <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+                <div class="swatch" style="background:#16A34A;width:32px;height:32px;" data-hex="#16A34A"></div>
+                <div style="font-size:13px;"><strong>Green</strong> — ≤ 1 mi (hyper-local)</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+                <div class="swatch" style="background:#CA8A04;width:32px;height:32px;" data-hex="#CA8A04"></div>
+                <div style="font-size:13px;"><strong>Golden Yellow</strong> — 1–5 mi · dark: #EAB308 on dark tiles</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;">
+                <div class="swatch" style="background:#EA580C;width:32px;height:32px;" data-hex="#EA580C"></div>
+                <div style="font-size:13px;"><strong>Orange</strong> — 5–15 mi (city/regional)</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;">
+                <div class="swatch" style="background:#DC2626;width:32px;height:32px;" data-hex="#DC2626"></div>
+                <div style="font-size:13px;"><strong>Red</strong> — &gt; 15 mi (wide-area)</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px;">Interest Color Palette</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.5;">8 curated hues assigned based on most common co-subscription combinations. All pass WCAG AA. Medium saturation for map readability. Dark-mode variants for 4 categories used only on map bubbles and username colors.</div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="swatch" style="background:#16A34A;width:40px;height:40px;" data-hex="#16A34A"></div>
+                <div>
+                  <div style="font-weight:600;font-size:14px;">Forest Green</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);">Outdoors / Hiking / Nature — #16A34A</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="swatch" style="background:#2563EB;width:40px;height:40px;" data-hex="#2563EB"></div>
+                <div>
+                  <div style="font-weight:600;font-size:14px;">Cerulean Blue</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);">Sports / Athletics — #2563EB</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="swatch" style="background:#4F46E5;width:40px;height:40px;" data-hex="#4F46E5"></div>
+                <div>
+                  <div style="font-weight:600;font-size:14px;">Deep Indigo</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);">Music / Arts — #4F46E5 · dark: #818CF8</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="swatch" style="background:#EA580C;width:40px;height:40px;" data-hex="#EA580C"></div>
+                <div>
+                  <div style="font-weight:600;font-size:14px;">Burnt Orange</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);">Food & Drink / Coffee — #EA580C</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="swatch" style="background:#9333EA;width:40px;height:40px;" data-hex="#9333EA"></div>
+                <div>
+                  <div style="font-weight:600;font-size:14px;">Vivid Violet</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);">Arts / Crafts / Photography — #9333EA</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="swatch" style="background:#CA8A04;width:40px;height:40px;" data-hex="#CA8A04"></div>
+                <div>
+                  <div style="font-weight:600;font-size:14px;">Amber Gold</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);">Games / Board Games — #CA8A04 · dark: #FCD34D</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="swatch" style="background:#0D9488;width:40px;height:40px;" data-hex="#0D9488"></div>
+                <div>
+                  <div style="font-weight:600;font-size:14px;">Teal</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);">Technology / Coding — #0D9488 · dark: #2DD4BF</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="swatch" style="background:#DB2777;width:40px;height:40px;" data-hex="#DB2777"></div>
+                <div>
+                  <div style="font-weight:600;font-size:14px;">Cerise Pink</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);">Social / Community — #DB2777 · dark: #F472B6</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background:var(--surface2);border-radius:12px;padding:14px 16px;">
+              <div style="font-size:13px;font-weight:700;margin-bottom:10px;">📋 Figma Variables Export Checklist</div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.8;">
+                ✅ Create a "SquadSeeker/Brand" collection<br>
+                ✅ Create a "SquadSeeker/Interests" collection<br>
+                ✅ Create a "SquadSeeker/Semantic" collection<br>
+                ✅ Set light/dark mode as variable modes<br>
+                ✅ Export as JSON for Swift Color Asset Catalog<br>
+                ⚠️ 4 interest colors have separate dark-mode values<br>
+                ⚠️ Range cap yellow splits: #CA8A04 (light) / #EAB308 (dark)<br>
+                ⚠️ Music (Indigo) must stay ≥50° from Fuchsia accent
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end canvas-area -->
+
+    <!-- ── ANNOTATION SIDEBAR ────────────────────────── -->
+    <aside class="annotations" id="annotation-panel">
+      <div id="annotation-content">
+        <!-- filled by JS -->
+      </div>
+    </aside>
+
+  </main><!-- end main -->
+</div><!-- end app-shell -->
+
+<script>
+const SCREENS = ['1','2','3','4','5','6a','6b','7','8','9','10','11','12','palette'];
+let current = '1';
+
+const ANNOTATIONS = {
+  '1': {
+    title: 'Welcome / Sign-in',
+    num: 'Screen 01',
+    intent: 'First contact. Communicate the app identity in one glance, present sign-in options with clear hierarchy, and handle returning users.',
+    elements: [
+      'App logo + name: top 40% of screen',
+      '"Find your people, right where you are" — only tagline copy',
+      'Sign in with Apple (system-required black styling)',
+      'Sign in with Google (system-required white styling)',
+      '"Use email instead" — text link, not a button (lower visual weight)',
+      '"Already have an account?" — bottom of screen, inline link'
+    ],
+    heuristics: ['Minimalist design','Match system words','Error prevention','User control & freedom','Consistency & standards'],
+    notes: 'Auto-login bypasses this screen for returning users with saved sessions. Email/password requires verification before advancing.'
+  },
+  '2': {
+    title: 'Explainer Slides',
+    num: 'Screen 02',
+    intent: 'Trust-building and informed-consent screen. Must be honest about privacy before the permissions request fires.',
+    elements: [
+      '"Skip" text link — top-right, always visible on every slide',
+      'Single-concept illustration (abstract/iconographic)',
+      'Slide title — one short line',
+      'Slide body — 2–3 lines max, one concrete fact per line',
+      'Dot page indicator — tappable for non-linear nav',
+      '"Get Started" button replaces dots on final slide'
+    ],
+    heuristics: ['User control & freedom','Minimalist design','Match system words','Consistency & standards','Help & documentation','Visibility of system status'],
+    notes: 'Shown only once per account. System back gesture disabled. Covers: proximity matching, what strangers see, blackout zones.'
+  },
+  '3': {
+    title: 'Username Selection',
+    num: 'Screen 03',
+    intent: 'Permanent public identifier collection. User should never reach Continue without already knowing their name is valid and available.',
+    elements: [
+      'Step progress bar (1 of 3)',
+      'Permanence note displayed before field, not after',
+      'Auto-focused text input with character counter (12/30)',
+      'Inline validation row with 5 states: idle, format invalid, checking, available, taken',
+      'Continue button — disabled until "Available!" state confirmed',
+      'iOS keyboard return key mirrors button state'
+    ],
+    heuristics: ['Error prevention','Visibility of system status','Help users recognize & recover','Minimalist design','Accelerators'],
+    notes: '400ms debounce on API availability check. Validation row shows specific error (e.g. "No spaces allowed"), not generic "invalid".'
+  },
+  '4': {
+    title: 'Interest Selection',
+    num: 'Screen 04',
+    intent: 'First moment the app becomes personally relevant. Low-stakes, reversible, fast. At least one interest required.',
+    elements: [
+      'Step progress bar (2 of 3)',
+      '"What are you into?" + "Add more anytime" subtitle (communicates reversibility)',
+      'Search bar — not auto-focused (scan-first intent)',
+      '3-column scrolling chip grid — stable order (no reorder on select)',
+      'Continue button: inactive with "Choose at least one interest" label → active with "Continue (N selected)"'
+    ],
+    heuristics: ['Recognition rather than recall','Visibility of system status','Error prevention','User control & freedom','Minimalist design','Accelerators','Match system words'],
+    notes: 'Grid does not reorder on selection. Chips show checkmark when selected. No category headers in onboarding context.'
+  },
+  '5': {
+    title: 'Permissions',
+    num: 'Screen 05',
+    intent: 'Prime the user with honest context before iOS system dialogs fire. Maximize grant rates through transparency, not pressure.',
+    elements: [
+      'Step progress bar (3 of 3)',
+      'Location block with inline "Always Allow" vs "While Using" disclosure',
+      '"Allow Location" button — triggers iOS dialog immediately',
+      'Divider separating the two blocks',
+      'Notifications block — starts dimmed, activates after location resolves',
+      'Location block collapses to confirmation row after dialog (animated)',
+      '"Go to the map →" button appears after both are resolved'
+    ],
+    heuristics: ['Visibility of system status','Help & documentation','Error prevention','Match system words','User control & freedom','Minimalist design'],
+    notes: 'No skip mechanism — user must see each request but may deny via iOS dialog. Notifications button inactive until location dialog resolves.'
+  },
+  '6a': {
+    title: 'Map — Degraded State',
+    num: 'Screen 06A',
+    intent: 'Valid operating mode. Communicate what\'s missing, what still works, and give a one-tap recovery path. Never punish or lock out.',
+    elements: [
+      'Persistent slim banner (non-dismissible): "Location is off — find people nearby in Settings"',
+      'Map tiles render (greyed) — no content overlaid',
+      'First-load bottom sheet: icon + title + body + "Without location you can still..." note',
+      '"Enable Location" → deep-links to iOS Settings',
+      '"Not now" → dismisses sheet, never reappears',
+      'All 4 tab bar tabs fully active'
+    ],
+    heuristics: ['Visibility of system status','User control & freedom','Help users recognize & recover','Minimalist design','Error prevention','Match system words'],
+    notes: 'Banner uses neutral color (not red/yellow). Banner tappable in entirety. Sheet appears only once per install.'
+  },
+  '6b': {
+    title: 'Map — Empty State',
+    num: 'Screen 06B',
+    intent: 'Normal map with nothing on it yet. System is working. Make that clear without any apologetic UI.',
+    elements: [
+      'Map tiles centered on GPS position (~0.5-1mi zoom)',
+      'User position pin with pulsing animation (communicates "live")',
+      'Interest filter row — present and functional (teaches control)',
+      'Friends-only toggle — present with 3s tooltip on tap',
+      'Long-press context menu — active (event creation available immediately)',
+      'Recenter button — bottom right',
+      'One-time card: "You\'re all set. We\'ll notify you…" with dismiss ✕',
+      'No illustration, no "nobody here yet" copy on map itself'
+    ],
+    heuristics: ['Visibility of system status','Minimalist design','Recognition rather than recall','User control & freedom','Help & documentation','Accelerators'],
+    notes: 'Card appears only on first session. Count bubbles animate scale-in when they first appear. No loading spinner.'
+  },
+  '7': {
+    title: 'Interests Tab',
+    num: 'Screen 07',
+    intent: 'Three simultaneous jobs: manage subscriptions, discover local activity, browse full catalog — without feeling like three screens.',
+    elements: [
+      'My Interests: pinned horizontal chip row with color dots + item count',
+      'Long-press chip: visibility / notifications / unsubscribe context menu',
+      'Popular Near You: vertical activity cards with relative labels only (no counts)',
+      'Browse by Category: 2-column tile grid with category-colored backgrounds',
+      'Search icon: expands inline, replaces sections with results',
+      'First-session coach mark: "Long-press any interest…" (once only)'
+    ],
+    heuristics: ['Recognition rather than recall','Consistency & standards','Accelerators','Minimalist design','Visibility of system status','Error prevention','Help & documentation'],
+    notes: 'Popular Near You uses Location Service query (not pure DB read). Sensitive categories excluded. Max 5 cards shown with "See more" expansion.'
+  },
+  '8': {
+    title: 'Profile / Bio',
+    num: 'Screen 08',
+    intent: 'Single editable surface that doubles as the preview other users see. Incomplete state = open invitation, not failure state.',
+    elements: [
+      'Completion banner (25% per: photo, experience, tag, pronouns)',
+      '96pt circular photo placeholder with camera icon + "Add photo" label',
+      'Username (non-editable after onboarding)',
+      'Public interest chips row (map-color coded)',
+      'Per-section visibility icon: 🌐 Public / 👥 Friends only / 🔒 Private (cycles on tap)',
+      'Pronouns, Experience Level (segmented), Tags ("I\'m Looking For")',
+      '"Manage Interests" text link + "Sign Out" at bottom',
+      'Other user view: "•••" menu with Report / Block; context-sensitive action buttons'
+    ],
+    heuristics: ['Visibility of system status','User control & freedom','Consistency & standards','Error prevention','Recognition rather than recall','Minimalist design','Accelerators','Match system words','Help & documentation'],
+    notes: 'Visibility defaults to safe settings. No free-text fields in V1. Edit/Done commits all changes together (no per-field save).'
+  },
+  '9': {
+    title: 'Interest Detail',
+    num: 'Screen 09',
+    intent: 'Pre-subscription preview and post-subscription management in one screen. Range cap must be spatially intuitive, not just numeric.',
+    elements: [
+      'Large interest icon + name + category in rounded square container',
+      'Color-coded range map thumbnail (green/yellow/orange/red circles)',
+      'Activity row (only shown when arriving from Popular Near You)',
+      'Unsubscribed: Subscribe button + "You\'ll appear to others within N miles" note',
+      'Subscribed: "✓ Subscribed" chip + "Unsubscribe" link (with confirmation)',
+      'Settings expansion: Visibility (action sheet) + Notifications (action sheet with descriptions)',
+      '"Digest" explained in plain language in the action sheet'
+    ],
+    heuristics: ['Visibility of system status','Match system words','Error prevention','User control & freedom','Minimalist design','Consistency & standards','Accelerators','Recognition rather than recall'],
+    notes: 'Activity row absent for category/search arrivals. Settings expand with animation on subscription. Location editing disabled post-publication (events only).'
+  },
+  '10': {
+    title: 'Count Bubble Sheet',
+    num: 'Screen 10',
+    intent: 'The core discovery moment. Answer three questions: who are these people, what do we share, what can I do right now?',
+    elements: [
+      '75% sheet height — map visible and highlighted in top 25%',
+      'Pulsing ring on the tapped count bubble (confirms which one)',
+      'Sheet header: interest icon + "Hiking (3)" + dismiss ✕',
+      'Discord-style rows: avatar + colored username (interest color) + experience/role',
+      '"•••" trailing icon signals press-and-hold interaction',
+      'Context menu: View Profile, Send Friend Request, Message, Report, Block',
+      'Out-of-range actions shown greyed with "Move closer to connect"',
+      'Skeleton placeholder rows during loading'
+    ],
+    heuristics: ['Visibility of system status','Recognition rather than recall','Accelerators','Minimalist design','Consistency & standards','Help users recognize & recover','User control & freedom','Match system words'],
+    notes: 'Friend request does not dismiss sheet. "View Profile" back label = interest name. Empty state: "Looks like they just left."'
+  },
+  '11': {
+    title: 'Event Detail',
+    num: 'Screen 11',
+    intent: 'Serve three user types (prospective, RSVP\'d, host) with state-dependent action areas. Two-tap progressive disclosure from map.',
+    elements: [
+      'Map bubble popup (intermediate): title, date/time, attendee count, distance',
+      'Map thumbnail with live countdown timer and distance pill',
+      '"View on Map" text link below thumbnail',
+      'Metadata rows: title + interest chip, date (with auto-expiry), host, attendee count + RSVP note, visibility',
+      'Prospective: "I\'m Going" + consequence note',
+      'RSVP\'d: "Open Chat" (filled) + "Cancel RSVP" (outlined, requires confirmation alert)',
+      'Host: "Open Chat" + "Manage Event" → edit sheet with two-step cancel confirmation',
+      'Expired state: static map + "Open Chat" only'
+    ],
+    heuristics: ['Visibility of system status','Match system words','Error prevention','User control & freedom','Accelerators','Minimalist design','Consistency & standards'],
+    notes: 'RSVP requires no confirmation. Cancellation does (names chat access loss). Event location non-editable after publish. Chats tab is root-level destination.'
+  },
+  '12': {
+    title: 'Proximity Alert Notification',
+    num: 'Screen 12',
+    intent: 'App\'s core promise delivered to lock screen. Scannable, actionable without opening app, safe in semi-public context.',
+    elements: [
+      'Thumbnail: app icon with background hue shifted to interest color',
+      'Title: "3 people near you share your interest in Hiking"',
+      'Body: "Tap to see who\'s nearby on the map."',
+      'Batched: title="People near you share your interests" + subtitle lists interests',
+      'Sensitive interest fallback: generic copy + neutral icon color',
+      'Action 1: "Open Map" → deep-links to count bubble for triggered interest',
+      'Action 2: "Mute Hiking" → background API call, no app open required',
+      'k-anonymity check: notification does NOT fire if only 1 user nearby'
+    ],
+    heuristics: ['Visibility of system status','Recognition rather than recall','Accelerators','User control & freedom','Minimalist design','Error prevention','Consistency & standards','Match system words'],
+    notes: 'Icon design constraint: mark must read on all 8 interest hues at 40pt. Requires pre-rendered icon variants per interest color. When app is foregrounded, notification suppressed — map bubble animation is the feedback.'
+  },
+  'palette': {
+    title: 'Color Palette',
+    num: 'Design System',
+    intent: 'Complete token reference. Must be established before wireframing begins — 7 surfaces use interest colors.',
+    elements: [
+      'Fuchsia #D946EF as brand accent (distinguishes from Twitch #9146FF by 30° hue + value)',
+      '8 interest hues curated by common co-subscription combinations',
+      'Music revised to Deep Indigo #4F46E5 (50° from Fuchsia accent)',
+      'Golden Yellow #CA8A04 replaces Amber for range scale (45° gap from Orange)',
+      '4 interest hues have dark-mode variants for map tiles and username colors',
+      'All pass WCAG AA; notification copy targets WCAG AAA (7:1)'
+    ],
+    heuristics: ['Consistency & standards'],
+    notes: 'Export as Figma variables + Swift Color Asset Catalog. Define tokens before building screens. The 7 surfaces that use interest colors must all reference the same token.'
+  }
+};
+
+function goTo(id) {
+  const sid = String(id);
+  // Hide current
+  const oldPanel = document.getElementById('panel-' + current);
+  if (oldPanel) oldPanel.style.display = 'none';
+  document.querySelector(`[data-screen="${current}"]`)?.classList.remove('active');
+
+  // Show new
+  current = sid;
+  const newPanel = document.getElementById('panel-' + sid);
+  if (newPanel) newPanel.style.display = (sid === 'palette') ? 'block' : 'flex';
+  document.querySelector(`[data-screen="${sid}"]`)?.classList.add('active');
+
+  // Update annotation
+  const ann = ANNOTATIONS[sid];
+  if (ann) {
+    document.getElementById('annotation-content').innerHTML = `
+      <div class="annotation-title">${ann.title}</div>
+      <div class="annotation-num">${ann.num}</div>
+      <div class="annotation-section">
+        <h4>Intent</h4>
+        <p>${ann.intent}</p>
+      </div>
+      <div class="annotation-section">
+        <h4>Key Elements</h4>
+        <ul>${ann.elements.map(e=>`<li>${e}</li>`).join('')}</ul>
+      </div>
+      <div class="annotation-section">
+        <h4>Nielsen Heuristics</h4>
+        <div>${ann.heuristics.map(h=>`<span class="heuristic-tag">${h}</span>`).join('')}</div>
+      </div>
+      <div class="annotation-section">
+        <h4>Notes</h4>
+        <p>${ann.notes}</p>
+      </div>
+    `;
+  }
+
+  // Scroll canvas to top
+  document.getElementById('canvas').scrollTop = 0;
+}
+
+function navigate(dir) {
+  const idx = SCREENS.indexOf(current);
+  const next = SCREENS[idx + dir];
+  if (next) goTo(next);
+}
+
+function showPalette() { goTo('palette'); }
+
+// Init
+goTo('1');
+</script>
+</body>
+</html>

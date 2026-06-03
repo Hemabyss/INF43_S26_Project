@@ -1,0 +1,18 @@
+SquadSeeker — Coverage Summary
+Generated: 2026-06-03
+Tool: c8 (V8 coverage) over `node tests.js`
+Target: app.js (extracted logic layer)
+
+=============================== Coverage summary ===============================
+Statements   : 98.06% ( 455/464 )
+Branches     : 89.74% ( 105/117 )
+Functions    : 100%   ( 15/15 )
+Lines        : 98.06% ( 455/464 )
+================================================================================
+
+Open coverage/index.html in a browser for the full line-by-line HTML report.
+
+Note: these figures measure the testable logic layer (app.js). The DOM/UI layer
+in SquadSeeker_UI_Prototype.html is not exercised by this suite (browser-only;
+would require Playwright/Puppeteer) and is therefore excluded from this number.
+Regenerate with:  cd Testing && npx c8 --reporter=html --reporter=text node tests.js

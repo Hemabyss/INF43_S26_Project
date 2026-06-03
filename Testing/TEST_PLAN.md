@@ -1,8 +1,10 @@
 # TEST_PLAN.md — SquadSeeker
 **Course:** IN4MATX 43 — Spring 2026  
-**App:** SquadSeeker — geolocation interest-matching web app  
-**Prototype (live):** https://claude.ai/public/artifacts/f8ace482-848d-4d8e-8cfb-41563eba3300  
+**App:** SquadSeeker — geolocation interest-matching app (iOS in the architecture; HTML/JS UI prototype for this phase)  
+**UI prototype:** `UI_Prototyping/SquadSeeker_UI_Prototype.html` (committed)  
 **Repo:** https://github.com/Hemabyss/INF43_S26_Project
+
+> **Note — two prototypes.** The project contains two intentionally separate prototypes. (1) The **architecture spike** (FastAPI + Swift stubs under `Requirements_Spec/prototype/`, described in `PrototypeImplementation.md`) validates the client-server communication paths from HW2. (2) The **UI/logic prototype** (`UI_Prototyping/SquadSeeker_UI_Prototype.html`) is a self-contained HTML/JS build used to explore the interface and exercise the app's core logic. **This test plan targets the UI/logic prototype's logic layer** (extracted into `Testing/app.js`), because it is the only prototype with self-contained, runnable business logic. The FastAPI/Swift spike is stub-only (hardcoded responses) and out of scope for automated testing this phase.
 
 ---
 
@@ -10,7 +12,7 @@
 
 ## 1.1 Scope: what's in, what's out
 
-SquadSeeker is a single-file HTML prototype — all logic (state, validation, user management, events) lives in one JavaScript closure. The testable surface is the logic layer extracted from that file into `app.js`.
+SquadSeeker's UI/logic prototype is a single-file HTML app — all logic (state, validation, user management, events) lives in one JavaScript closure. The testable surface is the logic layer extracted from that file into `app.js`.
 
 | ✅ In scope | Why this matters |
 |---|---|
@@ -85,12 +87,15 @@ SquadSeeker is a single-file HTML prototype — all logic (state, validation, us
 
 ## 1.6 Team roles
 
+Ownership areas below reflect the team's agreed division of ongoing test work. The first testing commit was authored solely by Nikash; the remaining members own the categories listed as the suite grows.
+
 | Member | Owns which test categories / components |
 |---|---|
-| Nikash Malhotra | Logic extraction (`app.js`), full unit + integration test suite (`tests.js`), bug identification and documentation, TEST_PLAN.md authored — all work/ files covered in first commit |
-| _(teammate 2)_ | |
-| _(teammate 3)_ | |
-| _(teammate 4)_ | |
+| Nikash Malhotra | Logic extraction (`app.js`), initial unit + integration test suite (`tests.js`), bug identification and documentation, TEST_PLAN.md authoring |
+| Anna Lee | Registration, login/logout, and username/password validation tests; auth happy-path and error-path integration flows |
+| Manas Kottakota | Friend-request and blocking flows (unit + integration); state-consistency / atomic-mutation tests |
+| Tanmay Garg | Event creation, RSVP, and interest-based filtering tests; documented regression (`[BUG #N]`) tests |
+| Jared Yrastorza | Coverage tooling (`c8`) and the committed `coverage/` report; CI-readiness and the plan-vs-implementation gap reporting |
 
 ---
 
@@ -124,33 +129,37 @@ SquadSeeker is a single-file HTML prototype — all logic (state, validation, us
 ### Repository structure
 
 ```
-YOUR_REPO/
-├── docs/
-│   └── TEST_PLAN.md        ← this file
-├── app.js                  ← logic layer extracted from the prototype
-├── tests.js                ← full test suite (unit + integration)
+INF43_S26_Project/
+├── Testing/
+│   ├── TEST_PLAN.md        ← this file
+│   ├── app.js              ← logic layer extracted from the prototype
+│   ├── tests.js            ← full test suite (unit + integration)
+│   └── coverage/           ← committed c8 HTML coverage report (open index.html)
+├── UI_Prototyping/
+│   └── SquadSeeker_UI_Prototype.html   ← full exported UI prototype
+├── Architecture/
+├── Requirements_Spec/
 └── README.md
 ```
 
-The live prototype HTML is hosted at:  
-**https://claude.ai/public/artifacts/f8ace482-848d-4d8e-8cfb-41563eba3300**
-
-The prototype is **not** committed to the repo as an HTML file. `app.js` is the testable logic extracted from it. The Claude artifact link above is the authoritative source for the full running UI.
+The full exported UI prototype is committed at `UI_Prototyping/SquadSeeker_UI_Prototype.html`. `app.js` is the testable logic layer extracted from the prototype's JavaScript closure.
 
 ### How to clone and run (TA instructions)
 
 ```bash
 # 1. Clone the repo
 git clone https://github.com/Hemabyss/INF43_S26_Project.git
-cd YOUR_REPO
+cd INF43_S26_Project/Testing
 
 # 2. Verify Node is available (need ≥ 14)
 node --version
 
 # 3. No install step — zero external dependencies
-
-# 4. Run the full test suite
 node tests.js
+
+# 4. (Optional) regenerate the coverage report (requires network for npx)
+npx c8 --reporter=html --reporter=text node tests.js
+# → writes coverage/index.html
 ```
 
 ### Expected output
@@ -198,20 +207,20 @@ The 4 tests marked `[BUG #N]` **intentionally pass** by asserting the buggy beha
 
 ## 2.5 Coverage achieved
 
-**Last updated: 2026-06-02**
+**Last updated: 2026-06-03** (measured with `c8` — committed HTML report under `Testing/coverage/`, open `coverage/index.html`)
 
-| Test type | Tool | Coverage |
+| Test type | Tool | Coverage (logic layer, `app.js`) |
 |---|---|---|
-| Unit | Manual accounting (Node.js, no coverage tool) | 100% of extractable logic functions |
-| Integration | Manual accounting | 100% of multi-function flows in logic layer |
-| Combined — logic layer | — | ~100% of `app.js` |
-| Combined — full prototype | — | ~45% (logic layer only; DOM layer untested) |
+| Statements | c8 (V8 coverage) | **98.06%** (455/464) |
+| Branches | c8 | **89.74%** (105/117) |
+| Functions | c8 | **100%** (15/15) |
+| Lines | c8 | **98.06%** (455/464) |
+
+These numbers are now **measured, not estimated** — generated by running `npx c8 --reporter=html --reporter=text node tests.js`. The full line-by-line HTML report is committed under `Testing/coverage/` and a plain-text snapshot is at `Testing/coverage/COVERAGE_SUMMARY.txt`.
 
 **What is NOT covered and why:**
 
-The prototype is a single-file HTML app. Approximately 32 functions handle DOM mutations — rendering screens, toggling modals, updating counters, animating transitions. These functions cannot run in Node.js because they reference `document`, `window`, and browser APIs that don't exist in a Node environment. Testing them would require Playwright or Puppeteer (a headless browser), which is a future sprint goal. The 45% whole-file estimate is based on line counts: `app.js` (~120 lines of logic) vs the full prototype (~800 lines including DOM functions and HTML).
-
-No automated coverage tool (Jest `--coverage`, nyc, c8) was used because the test harness is a plain Node.js script with no build toolchain. Coverage was assessed manually by auditing which exported functions from `app.js` have at least one test exercising them.
+The c8 figures cover the logic layer (`app.js`) only. The full prototype (`UI_Prototyping/SquadSeeker_UI_Prototype.html`) also contains ~32 functions that handle DOM mutations — rendering screens, toggling modals, updating counters, animating transitions. These reference `document`, `window`, and browser APIs that do not exist in Node.js, so they are excluded from this measurement. Testing them would require Playwright or Puppeteer (a headless browser), which is a future sprint goal. The small remaining gap inside `app.js` itself (≈2% of statements, ≈10% of branches) is a handful of defensive error branches not yet exercised by a dedicated test.
 
 ---
 
