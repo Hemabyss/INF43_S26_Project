@@ -240,6 +240,3 @@ End-to-end tests using Playwright — specifically: open the prototype in a head
 **Where did Claude help — and where did it get things wrong?**  
 Claude was useful for quickly extracting the logic layer from the single-file prototype and scaffolding the test file structure. Where it went wrong initially: the first attempt generated a document with a completely different section structure than what the assignment required — it wrote an informal "Introduction / Scope / Test Cases / Bugs / Reflection" format instead of following the Part 1 / Part 2 / Part 3 structure with numbered subsections. It took an explicit correction to get the right document structure. Claude also initially ran test commands without producing the actual deliverable files, which needed to be caught and redirected.
 
-| _(add your team meetings here)_ | | | |
-
-> Maintain this log after every team meeting per the HW instructions.
