@@ -46,3 +46,20 @@
 - Discussed improvements related to usability, navigation, consistency, and minimalist design principles
 - Reviewed Nielsen heuristics and identified how the interface addresses areas such as error prevention, user control, and recognition over recall
 - Finalized mockups, organized documentation/screenshots, and confirmed all assignment requirements before submission
+
+---
+
+## Week 9
+
+**Date & Type:** May 27, 2026 — In Person (Discussion)
+
+**Attendees:** Manas, Nikash, Jared, Anna, Tanmay
+
+### Summary
+
+* Reviewed the completed UI prototype and finalized design refinements based on usability feedback and project requirements
+* Developed a testing plan covering unit tests, integration tests, coverage goals, and key quality objectives for the application
+* Identified high-priority features and user workflows to validate, focusing on functionality, reliability, and error handling
+* Assigned testing and documentation responsibilities across team members and discussed tools/frameworks for implementation
+* Organized screenshots, test artifacts, and remaining deliverables to prepare for final project submission
+
